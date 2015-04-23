@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="tink.skeleton">
+<html ng-app="app">
 <head>
   <meta charset="utf-8">
   <title>Tink module</title>
@@ -7,15 +7,208 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="initial-scale=1.0,user-scalable=no,minimum-scale=1.0">
   <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/tink-core/assets/tink/tink.css" />
   <!-- endbower -->
 </head>
 <body>
 
-<tink-skeleton data-text="Skeleton is working fine!"></tink-skeleton>
+<div ng-controller="load" class="container">
+  <h1>Datepicker Component</h1>
+  <hr>
+  <button ng-click="setDate()">date set</button> <button ng-click="setmonth()">add month</button>
+  <section class="panel">
+     <header class="panel-heading">
+      <i class="fa fa-th-large"></i>
+      <h1 class="panel-title">Single datepicker</h1>
+    </header>
+    <div class="panel-body">
+      <h3>Examples</h3>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 form-group">
+          <data-tink-datepicker data-ng-model="selectedDate1" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 form-group">
+          <data-tink-datepicker data-min-date="mindate" data-ng-model="selectedDate1" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 form-group">
+          <data-tink-datepicker data-max-date="maxdate" data-ng-model="selectedDate1" />
+        </div>
+      </div>
+      <h3>Validation</h3>
+      <div class="row">
+        <div class="col-xs-12 col-md-12">
+          <form name="dateForm" novalidate>
+            <div class="row form-group" data-ng-class="{'has-error':(dateForm.datepick.$dirty || dateForm.submitted) && dateForm.datepick.$invalid,'has-success': (dateForm.datepick.$dirty || dateForm.submitted) && dateForm.datepick.$valid}">
+              <div class="col-xs-12">
+                <label for="tink-username-example">Date</label>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="validation">
+                  <data-tink-datepicker required="required" name="datepick" data-max-date='maxdate' data-min-date='mindate' data-ng-model="selectedDate1"/>
+                </div>
+                <span class="help-block">Kies een datum die na {{minDateStr}} en voor {{maxDateStr}} ligt.</span>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-8">
+                <div class="messages" ng-messages="dateForm.datepick.$error" ng-if="(dateForm.datepick.$dirty || dateForm.submitted)" >
+                  <div class="text-danger" ng-message="date-required">Geef een geldige datum in.</div>
+                  <div class="text-danger" ng-message="date">Geef een geldige datum formaat in.</div>
+                  <div class="text-danger" ng-message="date-max">De datum die je koos ligt te ver in de toekomst. Kies een datum die voor {{maxDateStr}} ligt.</div>
+                  <div class="text-danger" ng-message="date-min">De datum die je koos ligt te ver in het verleden. Kies een datum die na {{minDateStr}} ligt.</div>
+                </div>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col-xs-12">
+                <button data-ng-click="signup()" type="button" class="btn-primary">Valideren</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <h3>Usage</h3>
+          <p>To use this directive you have to add <code>tink-datepicker</code> to the input field of your choice.<br/>
+            Do not forget to add a <code>data-ng-model</code> attribute to the input field. Otherwise it will not work.</p>
+          <p>To retrieve the selected date, retrieve the <code>data-ng-model</code> value in the controller.</p>
+        </div>
+        <div class="col-xs-12">
+          <h3>Options</h3>
+          <div class="table-responsive">
+            <table class="table-dev">
+              <thead>
+                <tr>
+                  <th>Attr</th>
+                  <th>Type</th>
+                  <th>Default</th>
+                  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>data-max-date</td>
+                  <td><code>date</code></td>
+                  <td><code>null</code></td>
+                  <td>when a date cannot be larger then the given max date.</td>
+                </tr>
+                <tr>
+                  <td>data-min-date</td>
+                  <td><code>date</code></td>
+                  <td><code>null</code></td>
+                  <td>when a date cannot be minor then the given min date.</td>
+                </tr>
+                <tr>
+                  <td>data-ng-model</td>
+                  <td><code>date</code></td>
+                  <td><code>null</code></td>
+                  <td>The date value.</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+  </section>
+  <section class="panel">
+    <header class="panel-heading">
+      <i class="fa fa-th-large"></i>
+      <h1 class="panel-title">Range datepicker</h1>
+    </header>
+    <div class="panel-body">
+      <h3>Examples</h3>
+
+        <div class="row">
+        <p class="col-xs-12">
+          <tink-datepicker-range data-first-date="firstSelectedDate" data-last-date="lastSelectedDate"></tink-datepicker-range>
+        </p>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <h3>Usage</h3>
+          <p>
+            Add element <code>&lt;tink-datepicker-range&gt;&lt;/tink-datepicker-range&gt;</code> to your html page.<br/>
+            Do not forget to add the attributes <code>first-date</code> and <code>last-date</code> otherwise it wil not work !
+          </p>
+          <p>
+            To retrieve the first selected date, attach a scope variable, for example <code>firstSelectedDate</code>, from your controller to the attribute <code>first-date</code>. This is the same for the second date.
+          </p>
+        </div>
+        <div class="col-xs-12">
+          <h3>Options</h3>
+          <div class="table-responsive">
+            <table class="table-dev">
+              <thead>
+                <tr>
+                  <th>Attr</th>
+                  <th>Type</th>
+                  <th>Default</th>
+                  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>data-max-date</td>
+                  <td><code>date</code></td>
+                  <td><code>null</code></td>
+                  <td>when a date cannot be larger then the given max date.</td>
+                </tr>
+                <tr>
+                  <td>data-min-date</td>
+                  <td><code>date</code></td>
+                  <td><code>null</code></td>
+                  <td>when a date cannot be minor then the given min date.</td>
+                </tr>
+                <tr>
+                  <td>data-ng-model</td>
+                  <td><code>date</code></td>
+                  <td><code>null</code></td>
+                  <td>The date value.</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
 
 <!-- bower:js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-touch/angular-touch.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/tink-helper-date-angular/dist/tink-helper-date-angular.min.js"></script>
+<script src="bower_components/tink-helper-format-angular/dist/tink-helper-format-angular.min.js"></script>
+<script src="bower_components/tink-helper-safe-apply-angular/dist/tink-helper-safe-apply-angular.min.js"></script>
 <!-- endbower -->
 
-<script src="scripts/directives/skeleton.js"></script>
+<script src="scripts/directives/tink-datepicker-angular.js"></script>
+
+<script>
+  var app = angular.module('app',['tink.datepicker']).controller('load',function($scope){
+    $scope.setDate = function(){
+      $scope.selectedDate1 = new Date();
+    }
+    $scope.setmonth = function(){
+      $scope.selectedDate1.setMonth($scope.selectedDate1.getMonth()+1);
+
+      console.log($scope.selectedDate1)
+    }
+    $scope.nullf = function(){
+      $scope.selectedDate1 = undefined;
+    }
+  });
+</script>
 </body>
 </html>

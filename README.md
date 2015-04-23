@@ -1,10 +1,10 @@
-# Tink skeleton Angular directive
+# Tink datepicker Angular directive
 
 v1.0.0
 
 ## What is this repository for?
 
-The Tink Angular skeleton provides a scaffold for a directive or service that can easily work with Tink.
+The Tink datepicker Angular directive gives your date input field a nice datepicker.
 
 Tink is an in-house developed easy-to-use front end framework for quick prototyping and simple deployment of all kinds of websites and apps, keeping a uniform and consistent look and feel.
 
@@ -18,9 +18,9 @@ Tink is an in-house developed easy-to-use front end framework for quick prototyp
 ### Install
 
 1. Go to the root of your project and type the following command in your terminal:
-   `bower install tink-back-to-top-angular --save`
+   `bower install tink-datepicker-angular --save`
 
-2. Include `dist/tink-back-to-top-angular.js` and its necessary dependencies in your project.
+2. Include `dist/tink-datepicker-angular.js` and its necessary dependencies in your project.
 
 3. On http://tink.digipolis.be you will find all necessary documentation.
 
