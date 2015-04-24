@@ -15,6 +15,7 @@
       ngModel:'=?',
       minDate:'=?',
       maxDate:'=?',
+      isDisabled:'=?'
     },
     controller:function($scope,$attrs){
       $scope.dynamicName = $attrs.name;
@@ -29,12 +30,21 @@
       return {
         pre:function(){},
         post:function(scope,element,attr){
-
         scope.opts = attr;
         /*
         * Define the variables we need trough the code.
         * 
         */
+
+        var $directive = {
+        viewDate: new Date(),
+        pane:{},
+        open:0,
+        mode:0,
+        appended:0,
+        selectedDate:null,
+        disabled:undefined
+      };
         
         //The clicable icon to open and close the datepicker
         var clickable = element.find('.datepicker-icon');
@@ -70,6 +80,31 @@
           //Build all the date what we need to show.
           scope.build();
         };
+
+        function disableElements(el) {
+        for (var i = 0; i < el.length; i++) {
+            $(el[i]).attr('disabled','disabled');
+            $(el[i]).attr('tabindex','-1');
+            disableElements(el[i].children);
+          }
+        }
+
+        function enableElements(el) {
+        for (var i = 0; i < el.length; i++) {
+            $(el[i]).removeAttr('disabled','disabled');
+            $(el[i]).removeAttr('tabindex','-1');
+            disableElements(el[i].children);
+          }
+        }
+
+        scope.$watch('isDisabled',function(newV){
+          $directive.disabled = newV;
+          if(newV){
+            disableElements(content);
+          }else{
+            enableElements(content);
+          }
+        });
 
         /*
         * Lisen to a value change
@@ -409,21 +444,22 @@
      var isTouch = ('createTouch' in $window.document) && isNative && isDateSupported();
 
       clickable.bind('mousedown touch',function(){
-        if(isTouch){
-          element.find('input[type=date]:first').focus();
-          element.find('input[type=date]:first').click();
-        }else{
-          safeApply(scope,function(){
-            currentSelected = null;
-            if($directive.open){
-              scope.hide();
+        safeApply(scope,function(){
+          if($directive.disabled !== true){
+            if(isTouch){
+              element.find('input[type=date]:first').focus();
+              element.find('input[type=date]:first').click();
             }else{
-              scope.$show();
-              content.focus();
+              currentSelected = null;
+              if($directive.open){
+                scope.hide();
+              }else{
+                scope.$show();
+                content.focus();
+              }             
             }
-
-          });
-        }
+          }
+         });
         return false;
       });
 
@@ -433,14 +469,7 @@
         dateFormat:'dd/mm/yyyy'
       };
 
-      var $directive = {
-        viewDate: new Date(),
-        pane:{},
-        open:0,
-        mode:0,
-        appended:0,
-        selectedDate:null
-      };
+      
 
       scope.$selectPane = function(value,keyboard) {
         $directive.viewDate = new Date(Date.UTC($directive.viewDate.getFullYear()+( ($directive.pane.year|| 0) * value), $directive.viewDate.getMonth() + ( ($directive.pane.month || 0) * value), 1));
