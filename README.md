@@ -43,8 +43,7 @@ Do not forget to add a `data-ng-model` attribute to the input field. Otherwise i
 To retrieve the selected date, retrieve the `data-ng-model value in the controller.
 
 ```html
-<data-tink-datepicker data-ng-model="selectedDate">
-</data-tink-datepicker>
+<data-tink-datepicker data-ng-model="selectedDate"></data-tink-datepicker>
 ```
 
 ### Options
