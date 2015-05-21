@@ -68,7 +68,7 @@ data-ng-model | `date` | `null` | The date value.
 <data-tink-datepicker data-max-date="maxdate" data-ng-model="selectedDate3"></data-tink-datepicker>
 ```
 
-###### Example of validation code: ######
+###### Possible validation code: ######
 
 ```html
 <form name="dateForm" novalidate="">
