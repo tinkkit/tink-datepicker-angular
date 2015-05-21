@@ -6,7 +6,7 @@ v1.1.0
 
 The Tink datepicker Angular directive gives your date input field a nice datepicker.
 
-Tink is an in-house developed easy-to-use front end framework for quick prototyping and simple deployment of all kinds of websites and apps, keeping a uniform and consistent look and feel.
+Tink is an in-house developed easy-to-use front-end framework for quick prototyping and simple deployment of all kinds of websites and apps, keeping a uniform and consistent look and feel.
 
 ## Setup
 
@@ -18,11 +18,42 @@ Tink is an in-house developed easy-to-use front end framework for quick prototyp
 ### Install
 
 1. Go to the root of your project and type the following command in your terminal:
+
    `bower install tink-datepicker-angular --save`
 
-2. Include `dist/tink-datepicker-angular.js` and its necessary dependencies in your project.
+2. Add the following files to your project:
 
-3. On http://tink.digipolis.be you will find all necessary documentation.
+  `<link rel="stylesheet" href="bower_components/tink-core/dist/tink.css" />` (or one of the Tink themes)
+
+  `<script src="bower_components/tink-accordion-angular/dist/tink-datepicker-angular.js"></script>`
+
+
+----------
+
+
+## How to use
+
+### tink-datepicker
+
+### Component
+
+To use this directive you have to add `tink-datepicker` to the input field of your choice.
+Do not forget to add a `data-ng-model` attribute to the input field. Otherwise it will not work.
+
+To retrieve the selected date, retrieve the `data-ng-model value in the controller.
+
+```html
+<data-tink-datepicker data-ng-model="selectedDate">
+</data-tink-datepicker>
+```
+
+### Options
+
+Attr | Type | Default | Details
+--- | --- | --- | ---
+data-max-date | `date` | `null` | When a date cannot be larger then the given max date.
+data-min-date | `date` | `null` | When a date cannot be minor then the given min date.
+data-ng-model | `date` | `null` | The date value.
 
 ## Contribution guidelines
 
