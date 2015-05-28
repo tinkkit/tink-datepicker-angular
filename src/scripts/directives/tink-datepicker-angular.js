@@ -532,7 +532,7 @@
 
         }
       };
-
+scope.$disable = function($event){console.log('u'); $event.preventDefault(); return false;}
       scope.$select = function(date){
       addTime(date,scope.ngModel);
       $directive.click = 1;
@@ -546,6 +546,7 @@
           setMode($directive.mode);
           scope.build();
         }
+        return false;
       };
 
       var currentSelected;
