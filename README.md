@@ -1,6 +1,6 @@
 # Tink datepicker Angular directive
 
-v1.1.1
+v1.1.2
 
 ## What is this repository for?
 
@@ -26,7 +26,7 @@ Tink is an in-house developed easy-to-use front-end framework for quick prototyp
   `<link rel="stylesheet" href="bower_components/tink-core/dist/tink.css" />` (or one of the Tink themes)
 
   `<script src="bower_components/tink-datepicker-angular/dist/tink-datepicker-angular.js"></script>`
-  
+
 3. Add `tink.datepicker` to your app module's dependency.
 
   `angular.module('myApp', ['tink.datepicker']);`
@@ -58,52 +58,6 @@ data-max-date | `date` | `null` | When a date cannot be larger then the given ma
 data-min-date | `date` | `null` | When a date cannot be minor then the given min date.
 data-ng-model | `date` | `null` | The date value.
 data-is-disabled | `boolean` | `false` | When the input field is disabled.
-
-###Examples
-
-```html
-<data-tink-datepicker data-ng-model="selectedDate1"></data-tink-datepicker>
-```
-
-```html
-<data-tink-datepicker data-min-date="mindate" data-ng-model="selectedDate2"></data-tink-datepicker>
-```
-
-```html
-<data-tink-datepicker data-max-date="maxdate" data-ng-model="selectedDate3"></data-tink-datepicker>
-```
-
-###### Possible validation code: ######
-
-```html
-<form name="dateForm" novalidate="">
-  <div class="row form-group" data-ng-class="{'has-error':(dateForm.datepick.$dirty || dateForm.submitted) && dateForm.datepick.$invalid,'has-success': (dateForm.datepick.$dirty || dateForm.submitted) && dateForm.datepick.$valid}">
-    <div class="col-xs-12">
-      <label for="tink-username-example">Date</label>
-    </div>
-    <div class="col-xs-12 col-sm-6">
-      <div class="validation">
-        <data-tink-datepicker required="required" name="datepick" data-max-date="maxdate" data-min-date="mindate" data-ng-model="selectedDate4">
-        </data-tink-datepicker>
-      </div>
-      <span class="help-block">Kies een datum kleiner dan {{maxDateStr}} en groter als {{minDateStr}}.</span>
-    </div>
-    <div class="col-xs-12 col-sm-4 col-sm-offset-2">
-      <div class="messages" ng-messages="dateForm.datepick.$error" ng-if="(dateForm.datepick.$dirty || dateForm.submitted)">
-        <div class="text-danger" ng-message="date-required">Geef een geldige datum in.</div>
-        <div class="text-danger" ng-message="date">Geef een geldige datum formaat in.</div>
-        <div class="text-danger" ng-message="date-max">De datum die je koos ligt te ver in de toekomst. Kies een datum die voor {{maxDateStr}} ligt.</div>
-        <div class="text-danger" ng-message="date-min">De datum die je koos ligt te ver in het verleden. Kies een datum die na {{minDateStr}} ligt.</div>
-      </div>
-    </div>
-  </div>
-  <div class="row form-group">
-    <div class="col-xs-12">
-      <button data-ng-click="signup()" type="button" class="btn-primary">Valideren</button>
-    </div>
-  </div>
-</form>
-```
 
 ## Contribution guidelines
 
