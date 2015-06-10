@@ -1,6 +1,6 @@
 # Tink datepicker Angular directive
 
-v1.1.2
+v1.1.3
 
 ## What is this repository for?
 
@@ -27,19 +27,25 @@ Tink is an in-house developed easy-to-use front-end framework for quick prototyp
 
    `<script src="bower_components/tink-datepicker-angular/dist/tink-datepicker-angular.js"></script>`
 
+   `<script src="bower_components/tink-helper-date-angular/dist/tink-helper-date-angular.js"></script>`
+
+   `<script src="bower_components/tink-helper-format-angular/dist/tink-helper-format-angular.js"></script>`
+
+   `<script src="bower_components/tink-helper-safe-apply-angular/dist/tink-helper-safe-apply-angular.js"></script>`
+
 3. Add `tink.datepicker` to your app module's dependency.
 
    `angular.module('myApp', ['tink.datepicker']);`
 
 
+
 ----------
+
 
 
 ## How to use
 
 ### tink-datepicker
-
-### Component
 
 To use this directive you have to add `tink-datepicker` to the input field of your choice.
 Do not forget to add a `data-ng-model` attribute to the input field. Otherwise it will not work.
@@ -58,6 +64,10 @@ data-max-date | `date` | `null` | When a date cannot be larger then the given ma
 data-min-date | `date` | `null` | When a date cannot be minor then the given min date.
 data-ng-model | `date` | `null` | The date value.
 data-is-disabled | `boolean` | `false` | When the input field is disabled.
+
+###Example
+
+A working example can be found in [the Tink documentation](http://tink.digipolis.be/#/docs/directives/datepicker#example).
 
 ## Contribution guidelines
 
