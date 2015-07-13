@@ -9,6 +9,7 @@ describe('datepicker', function() {
   beforeEach(module('ngAnimateMock'));
   beforeEach(module('ngSanitize'));
   beforeEach(module('tink.datepicker'));
+  beforeEach(module('tink.datehelper'));
   beforeEach(module('templates'));
 
   beforeEach(inject(function (_$rootScope_, _$compile_, _$templateCache_, _$animate_, _dateFilter_,_$timeout_,_dateCalculator_) {
@@ -47,7 +48,7 @@ describe('datepicker', function() {
     },
     'max-min': {
       scope: {selectedDate: new Date(),mindate:null,maxdate:null},
-      element:  '<data-tink-datepicker required="required" name="datepick" data-max-date="maxdate" data-min-date="mindate" data-ng-model="selectedDate"/>'
+      element:  '<form name="formTest"><data-tink-datepicker required="required" name="datepick" data-max-date="maxdate" data-min-date="mindate" data-ng-model="selectedDate"/></form>'
     },
 
   };
@@ -270,6 +271,27 @@ describe('datepicker', function() {
         }
       });
       expect(num).toBe(49);
+    });
+
+    it('min max date-min',function(){
+      var elm = compileDirective('max-min',{selectedDate:new Date(2014,1,11),mindate:new Date(2015,1,10),maxdate:new Date(2015,1,21)});
+      angular.element(elm.find('.datepicker-icon')[0]).triggerHandler('mousedown');
+      scope.$digest();
+      expect(scope.formTest.datepick.$error['date-min']).toBe(true);
+    });
+
+    it('min max date-min',function(){
+      var elm = compileDirective('max-min',{selectedDate:new Date(2016,1,11),mindate:new Date(2015,1,10),maxdate:new Date(2015,1,21)});
+      angular.element(elm.find('.datepicker-icon')[0]).triggerHandler('mousedown');
+      scope.$digest();
+      expect(scope.formTest.datepick.$error['date-max']).toBe(true);
+    });
+
+    it('min max required',function(){
+      var elm = compileDirective('max-min',{selectedDate:null,mindate:new Date(2015,1,10),maxdate:new Date(2015,1,21)});
+      angular.element(elm.find('.datepicker-icon')[0]).triggerHandler('mousedown');
+      scope.$digest();
+      expect(scope.formTest.datepick.$error['date-required']).toBe(true);
     });
 
   });
