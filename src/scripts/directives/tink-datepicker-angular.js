@@ -215,7 +215,6 @@
           // namespaced events too.
           this.each(function() {
               var handlers = $._data(this, 'events')[name.split('.')[0]];
-              console.log(handlers);
               // take out the handler we just inserted from the end
               var handler = handlers.pop();
               // move it at the beginning
@@ -530,7 +529,9 @@
 
         }
       };
-scope.$disable = function($event){console.log('u'); $event.preventDefault(); return false;};
+    scope.$disable = function($event){
+      $event.preventDefault(); return false;
+    };
       scope.$select = function(date){
       addTime(date,scope.ngModel);
       $directive.click = 1;
