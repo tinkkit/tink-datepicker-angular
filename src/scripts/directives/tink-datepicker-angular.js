@@ -18,11 +18,6 @@
       isDisabled:'=?',
       name:'='
     },
-    controller:function($scope,$attrs){
-      
-      //$scope.requiredVal = false;
-      //$scope.mindate = new Date();
-    },
     compile: function(template,$attr) {
       if($attr.required){
         $attr.required = false;
@@ -535,7 +530,7 @@
 
         }
       };
-scope.$disable = function($event){console.log('u'); $event.preventDefault(); return false;}
+scope.$disable = function($event){console.log('u'); $event.preventDefault(); return false;};
       scope.$select = function(date){
       addTime(date,scope.ngModel);
       $directive.click = 1;

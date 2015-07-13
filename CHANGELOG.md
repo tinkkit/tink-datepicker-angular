@@ -15,6 +15,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 -->
 
 
+## [1.1.4] - 2015-06-13
+
+### Fixed
+- Fixed problem with error form messages
 
 ## [1.1.3] - 2015-06-10
 

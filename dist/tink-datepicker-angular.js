@@ -15,21 +15,19 @@
       ngModel:'=?',
       minDate:'=?',
       maxDate:'=?',
-      isDisabled:'=?'
-    },
-    controller:function($scope,$attrs){
-      $scope.dynamicName = $attrs.name;
-      $scope.requiredVal = false;
-      //$scope.mindate = new Date();
+      isDisabled:'=?',
+      name:'='
     },
     compile: function(template,$attr) {
       if($attr.required){
         $attr.required = false;
         template.find('input').attr('data-require',true);
+        template.find('input').attr('name',template.attr('name'));
       }
       return {
         pre:function(){},
         post:function(scope,element,attr){
+        scope.name = attr.name;
         scope.opts = attr;
         /*
         * Define the variables we need trough the code.
@@ -532,7 +530,7 @@
 
         }
       };
-scope.$disable = function($event){console.log('u'); $event.preventDefault(); return false;}
+scope.$disable = function($event){console.log('u'); $event.preventDefault(); return false;};
       scope.$select = function(date){
       addTime(date,scope.ngModel);
       $directive.click = 1;
