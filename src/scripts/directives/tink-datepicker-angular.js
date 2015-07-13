@@ -15,21 +15,24 @@
       ngModel:'=?',
       minDate:'=?',
       maxDate:'=?',
-      isDisabled:'=?'
+      isDisabled:'=?',
+      name:'='
     },
     controller:function($scope,$attrs){
-      $scope.dynamicName = $attrs.name;
-      $scope.requiredVal = false;
+      
+      //$scope.requiredVal = false;
       //$scope.mindate = new Date();
     },
     compile: function(template,$attr) {
       if($attr.required){
         $attr.required = false;
         template.find('input').attr('data-require',true);
+        template.find('input').attr('name',template.attr('name'));
       }
       return {
         pre:function(){},
         post:function(scope,element,attr){
+        scope.name = attr.name;
         scope.opts = attr;
         /*
         * Define the variables we need trough the code.

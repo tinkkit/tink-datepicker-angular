@@ -23,21 +23,7 @@
     </header>
     <div class="panel-body">
       <h3>Examples</h3>
-      <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4 form-group">
-          <data-tink-datepicker data-is-disabled="disable" data-ng-model="selectedDate1" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4 form-group">
-          <data-tink-datepicker data-min-date="mindate" data-ng-model="selectedDate1" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4 form-group">
-          <data-tink-datepicker data-max-date="maxdate" data-ng-model="selectedDate1" />
-        </div>
-      </div>
+
       <h3>Validation</h3>
       <div class="row">
         <div class="col-xs-12 col-md-12">
@@ -66,6 +52,7 @@
                 <button data-ng-click="signup()" type="button" class="btn-primary">Valideren</button>
               </div>
             </div>
+            <button ng-click="testV()">test it </button>
           </form>
         </div>
       </div>
@@ -176,6 +163,7 @@
         </div>
       </div>
     </div>
+    <button ng-click="log()"></button>
   </section>
 </div>
 
@@ -192,11 +180,15 @@
 <script src="bower_components/tink-helper-format-angular/dist/tink-helper-format-angular.js"></script>
 <script src="bower_components/tink-helper-safe-apply-angular/dist/tink-helper-safe-apply-angular.js"></script>
 <!-- endbower -->
-
+<script src="bower_components/angular-messages/angular-messages.js"></script>
 <script src="scripts/directives/tink-datepicker-angular.js"></script>
 
 <script>
-  var app = angular.module('app',['tink.datepicker']).controller('load',function($scope){
+  var app = angular.module('app',['tink.datepicker','ngMessages']).controller('load',function($scope){
+    
+    $scope.maxdate = new Date(2015,07,20);
+    $scope.mindate = new Date();
+
     $scope.setDate = function(){
       $scope.selectedDate1 = new Date();
     }
@@ -205,8 +197,16 @@
 $scope.disable = false;
       console.log($scope.selectedDate1)
     }
+    $scope.testV = function(){
+      console.log($scope.dateForm)
+      console.log($scope.dateForm.datepick)
+    }
     $scope.nullf = function(){
       $scope.selectedDate1 = undefined;
+    }
+
+    $scope.log = function (){
+      console.log(dateForm.datepick,dateForm.$datepick)
     }
 
     $scope.disable = true;
