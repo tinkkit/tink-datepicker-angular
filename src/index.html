@@ -50,9 +50,11 @@
             <div class="row form-group">
               <div class="col-xs-12">
                 <button data-ng-click="signup()" type="button" class="btn-primary">Valideren</button>
+                    <button ng-click="testV()">test</button>
+
               </div>
             </div>
-            <button ng-click="testV()">test it </button>
+           
           </form>
         </div>
       </div>
@@ -163,7 +165,6 @@
         </div>
       </div>
     </div>
-    <button ng-click="log()"></button>
   </section>
 </div>
 
@@ -198,8 +199,8 @@ $scope.disable = false;
       console.log($scope.selectedDate1)
     }
     $scope.testV = function(){
-      console.log($scope.dateForm)
-      console.log($scope.dateForm.datepick)
+
+      console.log($scope.selectedDate1)
     }
     $scope.nullf = function(){
       $scope.selectedDate1 = undefined;

@@ -14,6 +14,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [1.1.6] - 2015-07-14
+
+### Fixed
+- Fixed fixed datepicker issue with deleted date.
+
 ## [1.1.5] - 2015-06-13
 
 ### Removed

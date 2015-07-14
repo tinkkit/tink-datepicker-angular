@@ -119,6 +119,9 @@
               $directive.viewDate = $directive.selectedDate;
               //Build the datepicker again because we have changed the variables.
               scope.build();
+            }else{
+              $directive.selectedDate = null;
+              scope.build();
             }
           });
         });
