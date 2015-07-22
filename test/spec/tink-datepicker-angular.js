@@ -291,7 +291,7 @@ describe('datepicker', function() {
       var elm = compileDirective('max-min',{selectedDate:null,mindate:new Date(2015,1,10),maxdate:new Date(2015,1,21)});
       angular.element(elm.find('.datepicker-icon')[0]).triggerHandler('mousedown');
       scope.$digest();
-      expect(scope.formTest.datepick.$error['date-required']).toBe(true);
+      expect(scope.formTest.datepick.$error['required']).toBe(true);
     });
 
   });

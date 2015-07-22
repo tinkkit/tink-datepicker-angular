@@ -16,7 +16,8 @@
       minDate:'=?',
       maxDate:'=?',
       isDisabled:'=?',
-      name:'='
+      name:'=',
+      ngChange:'&'
     },
     compile: function(template,$attr) {
       if($attr.required){
@@ -24,6 +25,10 @@
         template.find('input').attr('data-require',true);
         template.find('input').attr('name',template.attr('name'));
       }
+      if($attr.ngChange){
+        //template.find('input').attr('ng-change',template.attr('ng-change'));
+      }
+
       return {
         pre:function(){},
         post:function(scope,element,attr){
@@ -104,6 +109,12 @@
           }
         });
 
+        scope.$watch('ngModel',function(value){
+          if(angular.isDefined(value)){
+            scope.ngChange();
+          }
+        });
+
         /*
         * Lisen to a value change
         */
@@ -114,7 +125,7 @@
             if(validFormat(val,'dd/mm/yyyy')){
               //Convert the String Date to a Date object and put it as the selected date.
               $directive.selectedDate = dateCalculator.getDate(val,'dd/mm/yyyy');
-              addTime($directive.selectedDate,scope.ngModel);
+              //addTime($directive.selectedDate,scope.ngModel);
               //change the view date to the date we have selected.
               $directive.viewDate = $directive.selectedDate;
               //Build the datepicker again because we have changed the variables.
@@ -536,7 +547,7 @@
       $event.preventDefault(); return false;
     };
       scope.$select = function(date){
-      addTime(date,scope.ngModel);
+      //addTime(date,scope.ngModel);
       $directive.click = 1;
       $directive.viewDate = date;
         if($directive.mode === 0){

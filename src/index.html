@@ -34,7 +34,7 @@
               </div>
               <div class="col-xs-12 col-sm-6 col-md-4">
                 <div class="validation">
-                  <data-tink-datepicker required="required" name="datepick" data-max-date='maxdate' data-min-date='mindate' data-ng-model="selectedDate1"/>
+                  <data-tink-datepicker required="required" ng-change="testV()" name="datepick" data-max-date='maxdate' data-min-date='mindate' data-ng-model="selectedDate1"/>
                 </div>
                 <span class="help-block">Kies een datum die na {{minDateStr}} en voor {{maxDateStr}} ligt.</span>
               </div>
@@ -178,8 +178,8 @@
 <script src="bower_components/angular-touch/angular-touch.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="bower_components/tink-helper-date-angular/dist/tink-helper-date-angular.js"></script>
-<script src="bower_components/tink-helper-format-angular/dist/tink-helper-format-angular.js"></script>
 <script src="bower_components/tink-helper-safe-apply-angular/dist/tink-helper-safe-apply-angular.js"></script>
+<script src="bower_components/tink-helper-format-angular/dist/tink-helper-format-angular.js"></script>
 <!-- endbower -->
 <script src="bower_components/angular-messages/angular-messages.js"></script>
 <script src="scripts/directives/tink-datepicker-angular.js"></script>
@@ -200,7 +200,7 @@ $scope.disable = false;
     }
     $scope.testV = function(){
 
-      console.log($scope.selectedDate1)
+      console.log($scope.dateForm)
     }
     $scope.nullf = function(){
       $scope.selectedDate1 = undefined;
