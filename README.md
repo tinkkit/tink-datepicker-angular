@@ -60,10 +60,11 @@ To retrieve the selected date, retrieve the `data-ng-model value in the controll
 
 Attr | Type | Default | Details
 --- | --- | --- | ---
-data-max-date | `date` | `null` | When a date cannot be larger then the given max date.
-data-min-date | `date` | `null` | When a date cannot be minor then the given min date.
 data-ng-model | `date` | `null` | The date value.
-data-is-disabled | `boolean` | `false` | When the input field is disabled.
+data-max-date | `date` | `null` | The minimum available date that can be selected.
+data-min-date | `date` | `null` | The maximum available date that can be selected.
+data-is-disabled | `boolean` | `false` | Whether the input field is disabled or not.
+data-aligns-right | `boolean` | `false` | Aligns the datepicker to the right edge of the input field (instead of the left edge).
 
 ###Example
 
