@@ -17,7 +17,8 @@
       maxDate:'=?',
       isDisabled:'=?',
       name:'=',
-      ngChange:'&'
+      ngChange:'&',
+      alignsRight:'=?'
     },
     compile: function(template,$attr) {
       if($attr.required){
@@ -36,7 +37,7 @@
         scope.opts = attr;
         /*
         * Define the variables we need trough the code.
-        * 
+        *
         */
 
         var $directive = {
@@ -48,7 +49,7 @@
         selectedDate:null,
         disabled:undefined
       };
-        
+
         //The clicable icon to open and close the datepicker
         var clickable = element.find('.datepicker-icon');
         //To hold a copy of the compiled template of the datepicker
@@ -137,13 +138,13 @@
           });
         });
 
-        function addTime(date1,date2){
-          if(angular.isDate(date1) && angular.isDate(date2)){
-            date1.setMinutes(date2.getMinutes());
-            date1.setHours(date2.getHours());
-            date1.setMilliseconds(date2.getMilliseconds());
-          }          
-        }
+        // function addTime(date1,date2){
+        //   if(angular.isDate(date1) && angular.isDate(date2)){
+        //     date1.setMinutes(date2.getMinutes());
+        //     date1.setHours(date2.getHours());
+        //     date1.setMilliseconds(date2.getMilliseconds());
+        //   }
+        // }
 
         /*
         * Function that starts all the liserners.
@@ -188,7 +189,7 @@
                 calcFocus(event.which);
                 //If the user presses the tab button
               }else if(event.keyCode === 9){
-                //Disable the blur function !              
+                //Disable the blur function !
                 content.bindFirst('blur.disable',function(e){
                   e.stopImmediatePropagation();
                   return false;
@@ -237,7 +238,7 @@
       };
 
       /*
-      * Checj if the date has the correct format.  
+      * Checj if the date has the correct format.
       */
       function validFormat(date,format){
           var dateObject;
@@ -435,8 +436,8 @@
           $directive.viewDate = newVal;
         }
       }, true);*/
-     
-   
+
+
 
       // labels for the days you can make this variable //
       var dayLabels = ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'];
@@ -467,7 +468,7 @@
               }else{
                 scope.$show();
                 content.focus();
-              }             
+              }
             }
           }
          });
@@ -480,7 +481,7 @@
         dateFormat:'dd/mm/yyyy'
       };
 
-      
+
 
       scope.$selectPane = function(value,keyboard) {
         $directive.viewDate = new Date(Date.UTC($directive.viewDate.getFullYear()+( ($directive.pane.year|| 0) * value), $directive.viewDate.getMonth() + ( ($directive.pane.month || 0) * value), 1));
@@ -496,6 +497,11 @@
           },50);
         }
       };
+
+      if($attr.alignsRight) {
+        scope.$alignsright = $attr.alignsRight;
+      }
+      console.log(scope.$alignsright);
 
       scope.$toggleMode = function(){
 
@@ -675,7 +681,7 @@
   'use strict';
 
   $templateCache.put('templates/tinkDatePickerField.html',
-    "<div role=datepicker class=\"dropdown-menu datepicker\" ng-class=\"'datepicker-mode-' + $mode\"> <table style=\"table-layout: fixed; height: 100%; width: 100%\"> <thead> <tr class=text-center> <th> <button tabindex=-1 type=button ng-disabled=pane.prev aria-label=\"vorige maand\" class=\"btn pull-left\" ng-mousedown=$disable($event) ng-click=$selectPane(-1)> <i class=\"fa fa-chevron-left\"></i> </button> </th> <th colspan=\"{{ rows[0].length - 2 }}\"> <button tabindex=0 type=button class=\"btn btn-block text-strong\" ng-mousedown=$disable($event) ng-click=$toggleMode()> <strong style=\"text-transform: capitalize\" ng-bind=title></strong> </button> </th> <th> <button tabindex=0 type=button ng-mousedown=$disable($event) ng-disabled=pane.next aria-label=\"volgende maand\" class=\"btn pull-right\" ng-click=$selectPane(+1)> <i class=\"fa fa-chevron-right\"></i> </button> </th> </tr> <tr class=datepicker-days ng-bind-html=labels ng-if=showLabels></tr> </thead> <tbody> <tr ng-repeat=\"(i, row) in rows\" height=\"{{ 100 / rows.length }}%\"> <td class=text-center ng-repeat=\"(j, el) in row\"> <button tabindex=0 type=button class=btn style=\"width: 100%\" ng-class=\"{'btn-selected': el.selected, 'btn-today': el.isToday && !el.elected, 'btn-grayed':el.isMuted}\" ng-mousedown=$disable($event) ng-focus=elemFocus($event) ng-click=$select(el.date) ng-disabled=el.disabled> <span role=\"\" ng-class=\"{'text-muted': el.muted}\" ng-bind=el.label></span> </button> </td> </tr> </tbody> </table> </div>"
+    "<div role=datepicker class=\"dropdown-menu datepicker\" ng-class=\"{'aligns-right': $alignsright == 'true'}\"> <table style=\"table-layout: fixed; height: 100%; width: 100%\"> <thead> <tr class=text-center> <th> <button tabindex=-1 type=button ng-disabled=pane.prev aria-label=\"vorige maand\" class=\"btn pull-left\" ng-mousedown=$disable($event) ng-click=$selectPane(-1)> <i class=\"fa fa-chevron-left\"></i> </button> </th> <th colspan=\"{{ rows[0].length - 2 }}\"> <button tabindex=0 type=button class=\"btn btn-block text-strong\" ng-mousedown=$disable($event) ng-click=$toggleMode()> <strong style=\"text-transform: capitalize\" ng-bind=title></strong> </button> </th> <th> <button tabindex=0 type=button ng-mousedown=$disable($event) ng-disabled=pane.next aria-label=\"volgende maand\" class=\"btn pull-right\" ng-click=$selectPane(+1)> <i class=\"fa fa-chevron-right\"></i> </button> </th> </tr> <tr class=datepicker-days ng-bind-html=labels ng-if=showLabels></tr> </thead> <tbody> <tr ng-repeat=\"(i, row) in rows\" height=\"{{ 100 / rows.length }}%\"> <td class=text-center ng-repeat=\"(j, el) in row\"> <button tabindex=0 type=button class=btn style=\"width: 100%\" ng-class=\"{'btn-selected': el.selected, 'btn-today': el.isToday && !el.elected, 'btn-grayed':el.isMuted}\" ng-mousedown=$disable($event) ng-focus=elemFocus($event) ng-click=$select(el.date) ng-disabled=el.disabled> <span role=\"\" ng-class=\"{'text-muted': el.muted}\" ng-bind=el.label></span> </button> </td> </tr> </tbody> </table> </div>"
   );
 
 

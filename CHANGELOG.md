@@ -14,25 +14,40 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [1.1.8] - 2015-08-26
+
+### Added
+- Added option to align the datepicker to the right
+
+
+
 ## [1.1.7] - 2015-07-22
 
 ### Added
 - Added ngChange.
+
+
 
 ## [1.1.6] - 2015-07-14
 
 ### Fixed
 - Fixed fixed datepicker issue with deleted date.
 
+
+
 ## [1.1.5] - 2015-06-13
 
 ### Removed
 - Removed console logs
 
+
+
 ## [1.1.4] - 2015-06-13
 
 ### Fixed
 - Fixed problem with error form messages
+
+
 
 ## [1.1.3] - 2015-06-10
 

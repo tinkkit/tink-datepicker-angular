@@ -17,7 +17,8 @@
       maxDate:'=?',
       isDisabled:'=?',
       name:'=',
-      ngChange:'&'
+      ngChange:'&',
+      alignsRight:'=?'
     },
     compile: function(template,$attr) {
       if($attr.required){
@@ -36,7 +37,7 @@
         scope.opts = attr;
         /*
         * Define the variables we need trough the code.
-        * 
+        *
         */
 
         var $directive = {
@@ -48,7 +49,7 @@
         selectedDate:null,
         disabled:undefined
       };
-        
+
         //The clicable icon to open and close the datepicker
         var clickable = element.find('.datepicker-icon');
         //To hold a copy of the compiled template of the datepicker
@@ -137,13 +138,13 @@
           });
         });
 
-        function addTime(date1,date2){
-          if(angular.isDate(date1) && angular.isDate(date2)){
-            date1.setMinutes(date2.getMinutes());
-            date1.setHours(date2.getHours());
-            date1.setMilliseconds(date2.getMilliseconds());
-          }          
-        }
+        // function addTime(date1,date2){
+        //   if(angular.isDate(date1) && angular.isDate(date2)){
+        //     date1.setMinutes(date2.getMinutes());
+        //     date1.setHours(date2.getHours());
+        //     date1.setMilliseconds(date2.getMilliseconds());
+        //   }
+        // }
 
         /*
         * Function that starts all the liserners.
@@ -188,7 +189,7 @@
                 calcFocus(event.which);
                 //If the user presses the tab button
               }else if(event.keyCode === 9){
-                //Disable the blur function !              
+                //Disable the blur function !
                 content.bindFirst('blur.disable',function(e){
                   e.stopImmediatePropagation();
                   return false;
@@ -237,7 +238,7 @@
       };
 
       /*
-      * Checj if the date has the correct format.  
+      * Checj if the date has the correct format.
       */
       function validFormat(date,format){
           var dateObject;
@@ -435,8 +436,8 @@
           $directive.viewDate = newVal;
         }
       }, true);*/
-     
-   
+
+
 
       // labels for the days you can make this variable //
       var dayLabels = ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'];
@@ -467,7 +468,7 @@
               }else{
                 scope.$show();
                 content.focus();
-              }             
+              }
             }
           }
          });
@@ -480,7 +481,7 @@
         dateFormat:'dd/mm/yyyy'
       };
 
-      
+
 
       scope.$selectPane = function(value,keyboard) {
         $directive.viewDate = new Date(Date.UTC($directive.viewDate.getFullYear()+( ($directive.pane.year|| 0) * value), $directive.viewDate.getMonth() + ( ($directive.pane.month || 0) * value), 1));
@@ -496,6 +497,11 @@
           },50);
         }
       };
+
+      if($attr.alignsRight) {
+        scope.$alignsright = $attr.alignsRight;
+      }
+      console.log(scope.$alignsright);
 
       scope.$toggleMode = function(){
 
