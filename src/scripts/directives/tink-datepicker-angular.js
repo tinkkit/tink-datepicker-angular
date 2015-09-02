@@ -501,7 +501,6 @@
       if($attr.alignsRight) {
         scope.$alignsright = $attr.alignsRight;
       }
-      console.log(scope.$alignsright);
 
       scope.$toggleMode = function(){
 
