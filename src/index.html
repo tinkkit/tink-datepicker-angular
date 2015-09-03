@@ -13,6 +13,12 @@
 <body>
 
 <div ng-controller="load" class="container">
+  <div class="row">
+    <div class="col-xs-12 margin-bottom margin-top">
+      <form name="formTest"><data-tink-datepicker required="required" name="datepick" data-max-date="maxdate" data-min-date="mindate" data-ng-model="selectedDate"/></form>
+    </div>
+  </div>
+
   <h1>Datepicker Component</h1>
   <hr>
   <button ng-click="setDate()">date set</button> <button ng-click="setmonth()">add month</button>

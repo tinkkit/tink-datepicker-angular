@@ -1,7 +1,7 @@
 {
   "name": "tink-datepicker-angular",
   "description": "Tink datepicker Angular directive",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "repository": {
     "type": "git",
     "url": "git@github.com:tinkkit/tink-datepicker-angular.git"

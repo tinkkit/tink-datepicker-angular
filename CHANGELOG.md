@@ -14,6 +14,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [1.2.0] - 2015-09-03
+
+### Added
+- Datepicker now accepts datestring too
+
+# Fixed
+- Fixed typos
+
+
+
 ## [1.1.9] - 2015-09-02
 
 ### Removed
