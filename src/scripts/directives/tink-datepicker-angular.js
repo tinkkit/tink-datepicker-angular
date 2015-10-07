@@ -110,12 +110,18 @@
               }
             });
 
-            scope.$watch('ngModel', function (value) {
-              if (angular.isDefined(value) && value !== null) {
-                if (!(value instanceof Date)) {
+            scope.$watch('ngModel', function (valueNew,valueOld) {
+              if (angular.isDefined(valueNew) && valueNew !== null) {
+                if (!(valueNew instanceof Date)) {
                   //Change to Date object
-                  scope.ngModel = new Date(value);
+                  scope.ngModel = new Date(valueNew);
                 }
+                if(valueNew instanceof Date && valueOld instanceof Date && valueNew.getTime() !== valueOld.getTime()){
+                  scope.ngChange();
+                }else if(valueNew instanceof Date &&  !(valueOld instanceof Date)){
+                  scope.ngChange();
+                }
+              }else{
                 scope.ngChange();
               }
             });
