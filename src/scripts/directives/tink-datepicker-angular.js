@@ -112,6 +112,7 @@
 
             scope.$watch('ngModel', function (valueNew,valueOld) {
               if (angular.isDefined(valueNew) && valueNew !== null) {
+                //scope.ngModel = addTime(valueNew,valueOld);
                 if (!(valueNew instanceof Date)) {
                   //Change to Date object
                   scope.ngModel = new Date(valueNew);
@@ -120,6 +121,10 @@
                   scope.ngChange();
                 }else if(valueNew instanceof Date &&  !(valueOld instanceof Date)){
                   scope.ngChange();
+                }else if(valueOld instanceof Date){
+                  scope.ngModel.setMinutes(valueOld.getMinutes());
+                  scope.ngModel.setHours(valueOld.getHours());
+                  scope.ngModel.setMilliseconds(valueOld.getMilliseconds());
                 }
               }else{
                 scope.ngChange();
@@ -148,13 +153,14 @@
               });
             });
 
-            // function addTime(date1,date2){
-            //   if(angular.isDate(date1) && angular.isDate(date2)){
-            //     date1.setMinutes(date2.getMinutes());
-            //     date1.setHours(date2.getHours());
-            //     date1.setMilliseconds(date2.getMilliseconds());
-            //   }
-            // }
+             function addTime(date1,date2){
+               if(angular.isDate(date1) && angular.isDate(date2)){
+                 date1.setMinutes(date2.getMinutes());
+                 date1.setHours(date2.getHours());
+                 date1.setMilliseconds(date2.getMilliseconds());
+               }
+               return date1;
+            }
 
             /*
             * Function that starts all the liserners.
@@ -562,12 +568,14 @@
                 $event.preventDefault(); return false;
               };
 
+            
+
               scope.$select = function (date) {
                 //addTime(date,scope.ngModel);
                 $directive.click = 1;
                 $directive.viewDate = date;
                 if ($directive.mode === 0) {
-                  scope.ngModel = date;
+                  scope.ngModel = addTime(date,scope.ngModel);
                   scope.hide();
                   setTimeout(function () { content.blur(); }, 0);
                 } else if ($directive.mode > 0) {
