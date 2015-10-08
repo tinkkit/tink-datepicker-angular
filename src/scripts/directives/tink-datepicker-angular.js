@@ -24,8 +24,8 @@
         if ($attr.required) {
           $attr.required = false;
           template.find('input').attr('data-require', true);
-          template.find('input').attr('name', template.attr('name'));
         }
+        template.find('input').attr('name', template.attr('name'));
         if ($attr.ngChange) {
           //template.find('input').attr('ng-change',template.attr('ng-change'));
         }
