@@ -13,6 +13,12 @@
 <body>
 
 <div ng-controller="load" class="container">
+  <div class="row">
+    <div class="col-xs-12 margin-bottom margin-top">
+      <form name="formTest"><data-tink-datepicker required="required" name="datepick" data-max-date="maxdate" data-min-date="mindate" data-ng-model="selectedDate"/></form>
+    </div>
+  </div>
+
   <h1>Datepicker Component</h1>
   <hr>
   <button ng-click="setDate()">date set</button> <button ng-click="setmonth()">add month</button>
@@ -34,7 +40,7 @@
               </div>
               <div class="col-xs-12 col-sm-6 col-md-4">
                 <div class="validation">
-                  <data-tink-datepicker required="required" ng-change="testV()" aligns-right="true" name="datepick" data-max-date='maxdate' data-min-date='mindate' data-ng-model="selectedDate1"/>
+                  <data-tink-datepicker ng-change="testV()" aligns-right="true" name="datepick"  data-ng-model="selectedDate1"/>
                 </div>
                 <span class="help-block">Kies een datum die na {{minDateStr}} en voor {{maxDateStr}} ligt.</span>
               </div>
@@ -50,7 +56,7 @@
             <div class="row form-group">
               <div class="col-xs-12">
                 <button data-ng-click="signup()" type="button" class="btn-primary">Valideren</button>
-                    <button ng-click="testV()">test</button>
+                    <button ng-click="nullf()">test</button>
 
               </div>
             </div>
@@ -203,7 +209,8 @@ $scope.disable = false;
       console.log($scope.dateForm)
     }
     $scope.nullf = function(){
-      $scope.selectedDate1 = undefined;
+      console.log($scope.dateForm.datepick);
+      //$scope.selectedDate1 = undefined;
     }
 
     $scope.log = function (){
