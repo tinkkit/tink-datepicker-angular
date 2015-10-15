@@ -155,9 +155,15 @@
 
              function addTime(date1,date2){
                if(angular.isDate(date1) && angular.isDate(date2)){
-                 date1.setMinutes(date2.getMinutes());
-                 date1.setHours(date2.getHours());
-                 date1.setMilliseconds(date2.getMilliseconds());
+                if(!isNaN(date2.getMinutes())){
+                  date1.setMinutes(date2.getMinutes());
+                }
+                if(!isNaN(date2.getMilliseconds())){
+                  date1.setMilliseconds(date2.getMilliseconds());
+                }
+                if(!isNaN(date2.getHours())){
+                  date1.setHours(date2.getHours());
+                }
                }
                return date1;
             }
