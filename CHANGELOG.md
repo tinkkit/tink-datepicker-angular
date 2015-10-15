@@ -14,6 +14,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [1.2.2] - 2015-10-15
+
+### Fixed
+- Fixed a bug where addTime function cause invalid dates
+
+
 ## [1.2.1] - 2015-10-08
 
 ### Fixed
