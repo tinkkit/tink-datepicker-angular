@@ -621,12 +621,13 @@
                 if ($directive.mode === 0) {
                   scope.title = dateCalculator.format($directive.viewDate, options.yearTitleFormat);
                   scope.rows = calView.daysInRows($directive.viewDate, $directive.selectedDate, scope.minDate, scope.maxDate);
-                  scope.labels = $sce.trustAsHtml('<th>' + dayLabels.join('</th><th>') + '</th>');
+                  scope.showLabels = $sce.trustAsHtml('<th>' + dayLabels.join('</th><th>') + '</th>');
                 }
                 if ($directive.mode === 2) {
                   var currentYear = parseInt(dateCalculator.format($directive.viewDate, 'yyyy'));
                   scope.title = (currentYear - 11) + '-' + currentYear;
                   scope.rows = calView.yearInRows($directive.viewDate, scope.minDate, scope.maxDate);
+                  scope.showLabels = 0;
                     //setMode(1);
                   }
                 };
