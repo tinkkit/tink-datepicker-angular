@@ -466,7 +466,7 @@
               // labels for the days you can make this variable //
               var dayLabels = ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'];
               // -- create the labels  --/
-              scope.labels = [];
+              scope.dayLabels = $sce.trustAsHtml('<th>' + dayLabels.join('</th><th>') + '</th>');
               // Add a watch to know when input changes from the outside //
 
               // -- check if we are using a touch device  --/
@@ -574,7 +574,7 @@
                 $event.preventDefault(); return false;
               };
 
-            
+
 
               scope.$select = function (date) {
                 //addTime(date,scope.ngModel);

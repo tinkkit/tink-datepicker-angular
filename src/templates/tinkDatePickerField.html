@@ -1,6 +1,6 @@
 <div  role="datepicker" class="dropdown-menu datepicker" ng-class="{'aligns-right': $alignsright == 'true'}">
-  <table style="table-layout: fixed; height: 100%; width: 100%;">
-    <thead>
+
+  <table>
       <tr class="text-center">
         <th>
           <button tabindex="-1" type="button" ng-disabled="pane.prev" aria-label="vorige maand" class="btn pull-left" ng-mousedown="$disable($event)" ng-click="$selectPane(-1)">
@@ -18,7 +18,14 @@
           </button>
         </th>
       </tr>
-      <tr class="datepicker-days" ng-bind-html="labels" ng-if="showLabels"></tr>
+</table>
+
+
+
+
+  <table style="table-layout: fixed; height: 100%; width: 100%;">
+    <thead>
+      <tr class="datepicker-days" ng-bind-html="dayLabels"></tr>
     </thead>
     <tbody>
       <tr ng-repeat="(i, row) in rows" height="{{ 100 / rows.length }}%">
