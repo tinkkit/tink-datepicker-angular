@@ -1,7 +1,7 @@
 <div  role="datepicker" class="dropdown-menu datepicker" ng-class="{'aligns-right': $alignsright == 'true'}">
   <table style="table-layout: fixed; height: 100%; width: 100%;">
     <thead>
-      <tr class="text-center">
+      <tr class="text-center datepicker-nav">
         <th>
           <button tabindex="-1" type="button" ng-disabled="pane.prev" aria-label="vorige maand" class="btn pull-left" ng-mousedown="$disable($event)" ng-click="$selectPane(-1)">
             <i class="fa fa-chevron-left"></i>
@@ -30,7 +30,7 @@
       </tr>
     </tbody>
   </table>
-  <div class="go-to-today">
+  <div class="select-current-date">
     <button type="button" class="btn-sm">Vandaag</button>
   </div>
 </div>
