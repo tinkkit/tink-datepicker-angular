@@ -14,6 +14,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+
+
+## [1.2.x] - 2015-11-xx
+
+### Added
+- Added weekdays
+- Added today button
+
+
+
 ## [1.2.2] - 2015-10-15
 
 ### Fixed
