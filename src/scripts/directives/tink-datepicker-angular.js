@@ -621,7 +621,7 @@
                 if ($directive.mode === 0) {
                   scope.title = dateCalculator.format($directive.viewDate, options.yearTitleFormat);
                   scope.rows = calView.daysInRows($directive.viewDate, $directive.selectedDate, scope.minDate, scope.maxDate);
-                  scope.showLabels = $sce.trustAsHtml('<th>' + dayLabels.join('</th><th>') + '</th>');
+                  scope.showLabels = 1;
                 }
                 if ($directive.mode === 2) {
                   var currentYear = parseInt(dateCalculator.format($directive.viewDate, 'yyyy'));
