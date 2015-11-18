@@ -88,7 +88,7 @@
             function disableElements(el) {
               for (var i = 0; i < el.length; i++) {
                 $(el[i]).attr('disabled', 'disabled');
-                $(el[i]).attr('tabindex', '-1');
+                //$(el[i]).attr('tabindex', '-1');
                 disableElements(el[i].children);
               }
             }
@@ -96,7 +96,7 @@
             function enableElements(el) {
               for (var i = 0; i < el.length; i++) {
                 $(el[i]).removeAttr('disabled', 'disabled');
-                $(el[i]).removeAttr('tabindex', '-1');
+                //$(el[i]).removeAttr('tabindex', '-1');
                 disableElements(el[i].children);
               }
             }
@@ -709,7 +709,7 @@
 
 
   $templateCache.put('templates/tinkDatePickerInput.html',
-    "<div class=datepicker-input-fields tabindex=-1> <input role=date aria-label=datepicker tabindex=-1 data-is-disabled=isDisabled tink-format-input data-format=00/00/0000 data-placeholder=dd/mm/jjjj data-date dynamic-name=dynamicName data-max-date=maxDate data-min-date=minDate ng-model=\"ngModel\">\n" +
+    "<div class=datepicker-input-fields> <input role=date aria-label=datepicker data-is-disabled=isDisabled tink-format-input data-format=00/00/0000 data-placeholder=dd/mm/jjjj data-date dynamic-name=dynamicName data-max-date=maxDate data-min-date=minDate ng-model=\"ngModel\">\n" +
     "<span role=\"datepicker icon\" class=datepicker-icon> <i class=\"fa fa-calendar\"></i> </span> </div>"
   );
 

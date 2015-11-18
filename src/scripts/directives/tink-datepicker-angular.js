@@ -88,7 +88,7 @@
             function disableElements(el) {
               for (var i = 0; i < el.length; i++) {
                 $(el[i]).attr('disabled', 'disabled');
-                $(el[i]).attr('tabindex', '-1');
+                //$(el[i]).attr('tabindex', '-1');
                 disableElements(el[i].children);
               }
             }
@@ -96,7 +96,7 @@
             function enableElements(el) {
               for (var i = 0; i < el.length; i++) {
                 $(el[i]).removeAttr('disabled', 'disabled');
-                $(el[i]).removeAttr('tabindex', '-1');
+                //$(el[i]).removeAttr('tabindex', '-1');
                 disableElements(el[i].children);
               }
             }
