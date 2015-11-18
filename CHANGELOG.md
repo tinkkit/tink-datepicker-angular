@@ -13,6 +13,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 -->
+## [1.2.3] - 2015-11-18
+
+### Fixed
+- Fixed focus bug
 
 
 
