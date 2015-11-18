@@ -8,7 +8,10 @@
   },
   "dependencies": {
     "bower": "^1.3.12",
-    "grunt-cli": "^0.1.13"
+    "grunt-cli": "^0.1.13",
+    "grunt-sass": "^1.1.0",
+    "sass-brunch": "^1.9.1"
+
   },
   "devDependencies": {
     "grunt": "^0.4.1",
