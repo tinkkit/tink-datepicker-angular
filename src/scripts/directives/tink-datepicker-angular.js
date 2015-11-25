@@ -76,6 +76,8 @@
               copyEl.attr('aria-hidden', 'false');
               //Change the css values to show the datepicker.
               copyEl.css({ position: 'absolute', display: 'block' });
+              //
+              copyEl.bind('mousedown',function(){return false;})
               //Bind all the liseners of the datepicker
               bindListeners();
               //Init variables when you open the datepicker.
@@ -163,9 +165,10 @@
               });
             });
 
-            content.bind('blur', function () {
+            content.bind('blur', function (e, val) {
               //We put this in a safeaply because we are out of the angular scope !
               safeApply(scope, function () {
+
                 scope.ngModel = $directive.selectedDate;
               });
             });
@@ -255,7 +258,7 @@
 
               //Aria: on content focus reset the selected aria focus.
               content.bind('focus', function () {
-                currentSelected = null;     
+                currentSelected = null;    
               });
 
               element.bind('focus', function () {
@@ -602,9 +605,9 @@
                 $directive.click = 1;
                 $directive.viewDate = date;
                 if ($directive.mode === 0) {
-                  scope.ngModel = addTime(date,scope.ngModel);
+                  $(content).scope().ctrl.setValue(dateCalculator.format(date, options.dateFormat));
                   scope.hide();
-                  setTimeout(function () { content.blur(); }, 0);
+                 // setTimeout(function () { content.blur(); }, 0);
                 } else if ($directive.mode > 0) {
                   $directive.mode -= 1;
                   setMode($directive.mode);
@@ -651,7 +654,7 @@
                     scope.rows = calView.yearInRows($directive.viewDate, scope.minDate, scope.maxDate);
                       //setMode(1);
                   }
-                });
+                })
                 };
 
                 function checkBefore(date, before) {
