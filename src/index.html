@@ -33,8 +33,8 @@
       <h3>Validation</h3>
       <div class="row">
         <div class="col-xs-12 col-md-12">
-          <form name="dateForm" novalidate>
-            <div class="row form-group" data-ng-class="{'has-error':(dateForm.datepick.$dirty || dateForm.submitted) && dateForm.datepick.$invalid,'has-success': (dateForm.datepick.$dirty || dateForm.submitted) && dateForm.datepick.$valid}">
+          <form name="load.dateForm" novalidate>
+            <div class="row form-group" data-ng-class="{'has-error':(load.dateForm.datepick.$ngBlur|| load.dateForm.submitted) && load.dateForm.datepick.$invalid,'has-success': (load.dateForm.datepick.$ngBlur || load.dateForm.submitted) && load.dateForm.datepick.$valid}">
               <div class="col-xs-12">
                 <label for="tink-username-example">Date</label>
               </div>
@@ -44,8 +44,9 @@
                 </div>
                 <span class="help-block">Kies een datum die na {{minDateStr}} en voor {{maxDateStr}} ligt.</span>
               </div>
+              {{load.dateForm.$dirty}}{{load.dateForm.datepick.$dirty}}
               <div class="col-xs-12 col-sm-6 col-md-8">
-                <div class="messages" ng-messages="dateForm.datepick.$error" ng-if="(dateForm.datepick.$dirty || dateForm.submitted)" >
+                <div class="messages" ng-messages="load.dateForm.datepick.$error" ng-if="load.dateForm.datepick.$ngBlur" >
                   <div class="text-danger" ng-message="date-required">Geef een geldige datum in.</div>
                   <div class="text-danger" ng-message="date">Geef een geldige datum formaat in.</div>
                   <div class="text-danger" ng-message="date-max">De datum die je koos ligt te ver in de toekomst. Kies een datum die voor {{maxDateStr}} ligt.</div>
