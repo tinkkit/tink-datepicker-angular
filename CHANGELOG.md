@@ -14,6 +14,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [1.3.1] - 2015-11-30
+
+### Changed
+- editable form field update
+
 
 ## [1.3.0] - 2015-11-18
 

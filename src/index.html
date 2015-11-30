@@ -40,7 +40,7 @@
               </div>
               <div class="col-xs-12 col-sm-6 col-md-4">
                 <div class="validation">
-                  <data-tink-datepicker ng-change="testV()" aligns-right="true" name="datepick"  data-ng-model="selectedDate1"/>
+                  <data-tink-datepicker ng-changed="testV()" ng-change="testV()" aligns-right="true" name="datepick"  data-ng-model="selectedDate1"/>
                 </div>
                 <span class="help-block">Kies een datum die na {{minDateStr}} en voor {{maxDateStr}} ligt.</span>
               </div>
@@ -206,7 +206,7 @@
     }
     $scope.testV = function(){
 
-      console.log($scope.dateForm)
+      console.log($scope.selectedDate1)
     }
     $scope.nullf = function(){
       console.log($scope.dateForm.datepick);

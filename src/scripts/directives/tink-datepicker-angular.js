@@ -273,7 +273,6 @@
               //Aria: on content focus reset the selected aria focus.
               content.bind('focus', function () {
                 currentSelected = null;
-                console.log($(content).isolateScope())       
               });
 
               element.bind('focus', function () {
