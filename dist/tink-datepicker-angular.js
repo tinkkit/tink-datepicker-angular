@@ -174,6 +174,7 @@
                 }
                 if(ctrl[0] && prevValue !== val){
                   ctrl[0].$setDirty();
+                  $(content).controller('ngModel').$setDirty();
                 }
                 prevValue = val;
               });
@@ -182,8 +183,8 @@
             content.bind('blur', function (e, val) {
               //We put this in a safeaply because we are out of the angular scope !
               safeApply(scope, function () {
-
                 scope.ngModel = $directive.selectedDate;
+                $(content).controller('ngModel').$ngBlur = true;
               });
             });
 
