@@ -33,6 +33,17 @@
         return {
           pre: function () { },
           post: function (scope, element, attr,ctrl) {
+
+           // -- check if we are using a touch device  --/
+            var isDateSupported = function () {
+              var i = document.createElement('input');
+              i.setAttribute('type', 'date');
+              return i.type !== 'text';
+            };
+
+            var isNative = /(ip(a|o)d|iphone|android)/ig.test($window.navigator.userAgent);
+            var isTouch = ('createTouch' in $window.document) && isNative && isDateSupported();
+
             scope.name = attr.name;
             scope.opts = attr;
             /*
@@ -47,7 +58,8 @@
               mode: 0,
               appended: 0,
               selectedDate: null,
-              disabled: undefined
+              disabled: undefined,
+              dateFormat:'dd/mm/yyyy'
             };
 
             //The clicable icon to open and close the datepicker
@@ -56,6 +68,9 @@
             var copyEl;
             //The editable div.
             var content = element.find('div.faux-input');
+            if(isTouch){
+              content = element.find('input');
+            }
             //To hold all the liseners to close them later
             var Listeners = {};
 
@@ -76,8 +91,6 @@
               copyEl.attr('aria-hidden', 'false');
               //Change the css values to show the datepicker.
               copyEl.css({ position: 'absolute', display: 'block' });
-              //
-              copyEl.bind('mousedown',function(){return false;})
               //Bind all the liseners of the datepicker
               bindListeners();
               //Init variables when you open the datepicker.
@@ -136,6 +149,7 @@
               }
             });
             var prevValue;
+            
             /*
             * Lisen to a value change
             */
@@ -144,11 +158,11 @@
               safeApply(scope, function () {
 
                 //Check if the date we received is a valid date.
-                if (validFormat(val, 'dd/mm/yyyy')) {
+                if (validFormat(val, $directive.dateFormat)) {
                   //Convert the String Date to a Date object and put it as the selected date.
-                  $directive.selectedDate = dateCalculator.getDate(val, 'dd/mm/yyyy');
+                  $directive.selectedDate = dateCalculator.getDate(val, $directive.dateFormat);
                   //ctrl[0].$setViewValue($directive.selectedDate);
-                  //addTime($directive.selectedDate,scope.ngModel);
+                  addTime($directive.selectedDate,scope.ngModel);
                   //change the view date to the date we have selected.
                   $directive.viewDate = $directive.selectedDate;
                   //Build the datepicker again because we have changed the variables.
@@ -258,11 +272,18 @@
 
               //Aria: on content focus reset the selected aria focus.
               content.bind('focus', function () {
-                currentSelected = null;    
+                currentSelected = null;
+                console.log($(content).isolateScope())       
               });
 
               element.bind('focus', function () {
-                $(content).scope().ctrl.setCurs();      
+                if($(content).scope() && $(content).scope().ctrl){
+                  $(content).scope().ctrl.setCurs();   
+                }else{
+                  $(element).find('input').focus();
+                  $(element).find('input').click();
+                  //$(element).find('input').touchstart();
+                }  
               });
 
               /*
@@ -493,15 +514,11 @@
               scope.labels = [];
               // Add a watch to know when input changes from the outside //
 
-              // -- check if we are using a touch device  --/
-              var isDateSupported = function () {
-                var i = document.createElement('input');
-                i.setAttribute('type', 'date');
-                return i.type !== 'text';
-              };
+             
 
-              var isNative = /(ip(a|o)d|iphone|android)/ig.test($window.navigator.userAgent);
-              var isTouch = ('createTouch' in $window.document) && isNative && isDateSupported();
+              if(isTouch){
+                $directive.dateFormat = 'yyyy-mm-dd';
+              }
 
               clickable.bind('mousedown touch', function () {
                 safeApply(scope, function () {
@@ -605,9 +622,9 @@
                 $directive.click = 1;
                 $directive.viewDate = date;
                 if ($directive.mode === 0) {
-                  $(content).scope().ctrl.setValue(dateCalculator.format(date, options.dateFormat));
+                  scope.ngModel = addTime(date,scope.ngModel);
                   scope.hide();
-                 // setTimeout(function () { content.blur(); }, 0);
+                  setTimeout(function () { content.blur(); }, 0);
                 } else if ($directive.mode > 0) {
                   $directive.mode -= 1;
                   setMode($directive.mode);
