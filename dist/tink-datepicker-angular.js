@@ -9,7 +9,7 @@
     return {
       restrict: 'E',
       require: ['ngModel', '?^form'],
-      replace: true,
+      replace: false,
       templateUrl: 'templates/tinkDatePickerInput.html',
       scope: {
         ngModel: '=?',
@@ -32,7 +32,18 @@
 
         return {
           pre: function () { },
-          post: function (scope, element, attr) {
+          post: function (scope, element, attr,ctrl) {
+
+           // -- check if we are using a touch device  --/
+            var isDateSupported = function () {
+              var i = document.createElement('input');
+              i.setAttribute('type', 'date');
+              return i.type !== 'text';
+            };
+
+            var isNative = /(ip(a|o)d|iphone|android)/ig.test($window.navigator.userAgent);
+            var isTouch = ('createTouch' in $window.document) && isNative && isDateSupported();
+
             scope.name = attr.name;
             scope.opts = attr;
             /*
@@ -47,7 +58,8 @@
               mode: 0,
               appended: 0,
               selectedDate: null,
-              disabled: undefined
+              disabled: undefined,
+              dateFormat:'dd/mm/yyyy'
             };
 
             //The clicable icon to open and close the datepicker
@@ -56,6 +68,9 @@
             var copyEl;
             //The editable div.
             var content = element.find('div.faux-input');
+            if(isTouch){
+              content = element.find('input');
+            }
             //To hold all the liseners to close them later
             var Listeners = {};
 
@@ -68,7 +83,8 @@
               // Check if the datepicker content isn't already added
               if ($directive.appended !== 1) {
                   //add the compiled version of the template to the dom
-                  element.append(copyEl);
+                  var fixForRightAppend = element.find('div.datepicker-input-fields');
+                  fixForRightAppend.append(copyEl);
                   //Raise the vlag
                   $directive.appended = 1;
                 }
@@ -116,6 +132,9 @@
                 if (!(valueNew instanceof Date)) {
                   //Change to Date object
                   scope.ngModel = new Date(valueNew);
+                }else{
+                   $directive.selectedDate = valueNew;
+                   $directive.viewDate = $directive.selectedDate;
                 }
                 if(valueNew instanceof Date && valueOld instanceof Date && valueNew.getTime() !== valueOld.getTime()){
                   scope.ngChange();
@@ -130,6 +149,7 @@
                 scope.ngChange();
               }
             });
+            var prevValue;
 
             /*
             * Lisen to a value change
@@ -137,19 +157,35 @@
             content.bind('valueChanged', function (e, val) {
               //We put this in a safeaply because we are out of the angular scope !
               safeApply(scope, function () {
+
                 //Check if the date we received is a valid date.
-                if (validFormat(val, 'dd/mm/yyyy')) {
+                if (validFormat(val, $directive.dateFormat)) {
                   //Convert the String Date to a Date object and put it as the selected date.
-                  $directive.selectedDate = dateCalculator.getDate(val, 'dd/mm/yyyy');
-                  //addTime($directive.selectedDate,scope.ngModel);
+                  $directive.selectedDate = dateCalculator.getDate(val, $directive.dateFormat);
+                  //ctrl[0].$setViewValue($directive.selectedDate);
+                  addTime($directive.selectedDate,scope.ngModel);
                   //change the view date to the date we have selected.
                   $directive.viewDate = $directive.selectedDate;
                   //Build the datepicker again because we have changed the variables.
                   scope.build();
+
                 } else {
                   $directive.selectedDate = null;
                   scope.build();
                 }
+                if(ctrl[0] && prevValue !== val){
+                  ctrl[0].$setDirty();
+                  $(content).controller('ngModel').$setDirty();
+                }
+                prevValue = val;
+              });
+            });
+
+            content.bind('blur', function (e, val) {
+              //We put this in a safeaply because we are out of the angular scope !
+              safeApply(scope, function () {
+                scope.ngModel = $directive.selectedDate;
+                $(content).controller('ngModel').$ngBlur = true;
               });
             });
 
@@ -239,6 +275,16 @@
               //Aria: on content focus reset the selected aria focus.
               content.bind('focus', function () {
                 currentSelected = null;
+              });
+
+              element.bind('focus', function () {
+                if($(content).scope() && $(content).scope().ctrl){
+                  $(content).scope().ctrl.setCurs();
+                }else{
+                  $(element).find('input').focus();
+                  $(element).find('input').click();
+                  //$(element).find('input').touchstart();
+                }
               });
 
               /*
@@ -469,15 +515,11 @@
               scope.labels = [];
               // Add a watch to know when input changes from the outside //
 
-              // -- check if we are using a touch device  --/
-              var isDateSupported = function () {
-                var i = document.createElement('input');
-                i.setAttribute('type', 'date');
-                return i.type !== 'text';
-              };
 
-              var isNative = /(ip(a|o)d|iphone|android)/ig.test($window.navigator.userAgent);
-              var isTouch = ('createTouch' in $window.document) && isNative && isDateSupported();
+
+              if(isTouch){
+                $directive.dateFormat = 'yyyy-mm-dd';
+              }
 
               clickable.bind('mousedown touch', function () {
                 safeApply(scope, function () {
@@ -574,7 +616,7 @@
                 $event.preventDefault(); return false;
               };
 
-            
+
 
               scope.$select = function (date) {
                 //addTime(date,scope.ngModel);
@@ -596,39 +638,41 @@
 
               scope.pane = { prev: false, next: false };
               scope.build = function () {
-                if ($directive.viewDate === null || $directive.viewDate === undefined) {
-                  $directive.viewDate = new Date();
-                }
-
-                if (checkBefore($directive.viewDate, scope.minDate)) {
-                  scope.pane.prev = true;
-                  $directive.viewDate = new Date(scope.minDate);
-                } else {
-                  scope.pane.prev = false;
-                }
-                if (checkAfter($directive.viewDate, scope.maxDate)) {
-                  scope.pane.next = true;
-                  $directive.viewDate = new Date(scope.maxDate);
-                } else {
-                  scope.pane.next = false;
-                }
-                scope.labels = [];
-                if ($directive.mode === 1) {
-                  scope.title = dateCalculator.format($directive.viewDate, 'yyyy');
-                  scope.rows = calView.monthInRows($directive.viewDate, scope.minDate, scope.maxDate);
-                  scope.showLabels = 0;
-                }
-                if ($directive.mode === 0) {
-                  scope.title = dateCalculator.format($directive.viewDate, options.yearTitleFormat);
-                  scope.rows = calView.daysInRows($directive.viewDate, $directive.selectedDate, scope.minDate, scope.maxDate);
-                  scope.labels = $sce.trustAsHtml('<th>' + dayLabels.join('</th><th>') + '</th>');
-                }
-                if ($directive.mode === 2) {
-                  var currentYear = parseInt(dateCalculator.format($directive.viewDate, 'yyyy'));
-                  scope.title = (currentYear - 11) + '-' + currentYear;
-                  scope.rows = calView.yearInRows($directive.viewDate, scope.minDate, scope.maxDate);
-                    //setMode(1);
+                safeApply(scope,function(){
+                  if ($directive.viewDate === null || $directive.viewDate === undefined) {
+                    $directive.viewDate = new Date();
                   }
+
+                  if (checkBefore($directive.viewDate, scope.minDate)) {
+                    scope.pane.prev = true;
+                    $directive.viewDate = new Date(scope.minDate);
+                  } else {
+                    scope.pane.prev = false;
+                  }
+                  if (checkAfter($directive.viewDate, scope.maxDate)) {
+                    scope.pane.next = true;
+                    $directive.viewDate = new Date(scope.maxDate);
+                  } else {
+                    scope.pane.next = false;
+                  }
+                  scope.labels = [];
+                  if ($directive.mode === 1) {
+                    scope.title = dateCalculator.format($directive.viewDate, 'yyyy');
+                    scope.rows = calView.monthInRows($directive.viewDate, scope.minDate, scope.maxDate);
+                    scope.showLabels = 0;
+                  }
+                  if ($directive.mode === 0) {
+                    scope.title = dateCalculator.format($directive.viewDate, options.yearTitleFormat);
+                    scope.rows = calView.daysInRows($directive.viewDate, $directive.selectedDate, scope.minDate, scope.maxDate);
+                    scope.labels = $sce.trustAsHtml('<th>' + dayLabels.join('</th><th>') + '</th>');
+                  }
+                  if ($directive.mode === 2) {
+                    var currentYear = parseInt(dateCalculator.format($directive.viewDate, 'yyyy'));
+                    scope.title = (currentYear - 11) + '-' + currentYear;
+                    scope.rows = calView.yearInRows($directive.viewDate, scope.minDate, scope.maxDate);
+                      //setMode(1);
+                  }
+                })
                 };
 
                 function checkBefore(date, before) {
@@ -704,12 +748,12 @@
   'use strict';
 
   $templateCache.put('templates/tinkDatePickerField.html',
-    "<div role=datepicker class=\"dropdown-menu datepicker\" ng-class=\"{'aligns-right': $alignsright == 'true'}\"> <table style=\"table-layout: fixed; height: 100%; width: 100%\"> <thead> <tr class=text-center> <th> <button tabindex=-1 type=button ng-disabled=pane.prev aria-label=\"vorige maand\" class=\"btn pull-left\" ng-mousedown=$disable($event) ng-click=$selectPane(-1)> <i class=\"fa fa-chevron-left\"></i> </button> </th> <th colspan=\"{{ rows[0].length - 2 }}\"> <button tabindex=0 type=button class=\"btn btn-block text-strong\" ng-mousedown=$disable($event) ng-click=$toggleMode()> <strong style=\"text-transform: capitalize\" ng-bind=title></strong> </button> </th> <th> <button tabindex=0 type=button ng-mousedown=$disable($event) ng-disabled=pane.next aria-label=\"volgende maand\" class=\"btn pull-right\" ng-click=$selectPane(+1)> <i class=\"fa fa-chevron-right\"></i> </button> </th> </tr> <tr class=datepicker-days ng-bind-html=labels ng-if=showLabels></tr> </thead> <tbody> <tr ng-repeat=\"(i, row) in rows\" height=\"{{ 100 / rows.length }}%\"> <td class=text-center ng-repeat=\"(j, el) in row\"> <button tabindex=0 type=button class=btn style=\"width: 100%\" ng-class=\"{'btn-selected': el.selected, 'btn-today': el.isToday && !el.elected, 'btn-grayed':el.isMuted}\" ng-mousedown=$disable($event) ng-focus=elemFocus($event) ng-click=$select(el.date) ng-disabled=el.disabled> <span role=\"\" ng-class=\"{'text-muted': el.muted}\" ng-bind=el.label></span> </button> </td> </tr> </tbody> </table> </div>"
+    "<div role=datepicker class=\"dropdown-menu datepicker\" data-ng-class=\"{'aligns-right': $alignsright == 'true'}\"> <table style=\"table-layout: fixed; height: 100%; width: 100%\"> <thead> <tr class=\"text-center datepicker-nav\"> <th> <button tabindex=-1 type=button data-ng-disabled=pane.prev aria-label=\"vorige maand\" class=\"btn pull-left\" data-ng-mousedown=$disable($event) data-ng-click=$selectPane(-1)> <i class=\"fa fa-chevron-left\"></i> </button> </th> <th colspan=\"{{ rows[0].length - 2 }}\"> <button tabindex=0 type=button class=\"btn btn-block text-strong\" data-ng-mousedown=$disable($event) data-ng-click=$toggleMode()> <strong style=\"text-transform: capitalize\" data-ng-bind=title></strong> </button> </th> <th> <button tabindex=0 type=button data-ng-mousedown=$disable($event) data-ng-disabled=pane.next aria-label=\"volgende maand\" class=\"btn pull-right\" data-ng-click=$selectPane(+1)> <i class=\"fa fa-chevron-right\"></i> </button> </th> </tr> <tr class=datepicker-days data-ng-bind-html=dayLabels data-ng-if=showLabels></tr> </thead> <tbody> <tr data-ng-repeat=\"(i, row) in rows\" height=\"{{ 100 / rows.length }}%\"> <td class=text-center data-ng-repeat=\"(j, el) in row\"> <button tabindex=0 type=button class=btn style=\"width: 100%\" data-ng-class=\"{'btn-selected': el.selected, 'btn-today': el.isToday && !el.elected, 'btn-grayed':el.isMuted}\" data-ng-mousedown=$disable($event) data-ng-focus=elemFocus($event) data-ng-click=$select(el.date) data-ng-disabled=el.disabled> <span role=\"\" data-ng-class=\"{'text-muted': el.muted}\" data-ng-bind=el.label></span> </button> </td> </tr> </tbody>  </table> </div>"
   );
 
 
   $templateCache.put('templates/tinkDatePickerInput.html',
-    "<div class=datepicker-input-fields> <input role=date aria-label=datepicker data-is-disabled=isDisabled tink-format-input data-format=00/00/0000 data-placeholder=dd/mm/jjjj data-date dynamic-name=dynamicName data-max-date=maxDate data-min-date=minDate ng-model=\"ngModel\">\n" +
+    "<div class=datepicker-input-fields> <input role=date aria-label=datepicker data-is-disabled=isDisabled tink-format-input data-format=00/00/0000 data-placeholder=dd/mm/jjjj data-date dynamic-name=dynamicName data-max-date=maxDate data-min-date=minDate data-ng-model=\"ngModel\">\n" +
     "<span role=\"datepicker icon\" class=datepicker-icon> <i class=\"fa fa-calendar\"></i> </span> </div>"
   );
 

@@ -15,7 +15,7 @@
 <div ng-controller="load" class="container">
   <div class="row">
     <div class="col-xs-12 margin-bottom margin-top">
-      <form name="formTest"><data-tink-datepicker required="required" name="datepick" data-max-date="maxdate" data-min-date="mindate" data-ng-model="selectedDate"/></form>
+      <form name="formTest"><data-tink-datepicker required="required" name="datepick" data-max-date="maxdate" data-min-date="mindate" data-ng-model="selectedDate" data-aligns-right="true" /></form>
     </div>
   </div>
 
@@ -33,19 +33,20 @@
       <h3>Validation</h3>
       <div class="row">
         <div class="col-xs-12 col-md-12">
-          <form name="dateForm" novalidate>
-            <div class="row form-group" data-ng-class="{'has-error':(dateForm.datepick.$dirty || dateForm.submitted) && dateForm.datepick.$invalid,'has-success': (dateForm.datepick.$dirty || dateForm.submitted) && dateForm.datepick.$valid}">
+          <form name="load.dateForm" novalidate>
+            <div class="row form-group" data-ng-class="{'has-error':(load.dateForm.datepick.$ngBlur|| load.dateForm.submitted) && load.dateForm.datepick.$invalid,'has-success': (load.dateForm.datepick.$ngBlur || load.dateForm.submitted) && load.dateForm.datepick.$valid}">
               <div class="col-xs-12">
                 <label for="tink-username-example">Date</label>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-4">
                 <div class="validation">
-                  <data-tink-datepicker ng-change="testV()" aligns-right="true" name="datepick"  data-ng-model="selectedDate1"/>
+                  <data-tink-datepicker ng-changed="testV()" ng-change="testV()" aligns-right="true" name="datepick"  data-ng-model="selectedDate1" datepicker />
                 </div>
                 <span class="help-block">Kies een datum die na {{minDateStr}} en voor {{maxDateStr}} ligt.</span>
               </div>
+              {{load.dateForm.$dirty}}{{load.dateForm.datepick.$dirty}}
               <div class="col-xs-12 col-sm-6 col-md-8">
-                <div class="messages" ng-messages="dateForm.datepick.$error" ng-if="(dateForm.datepick.$dirty || dateForm.submitted)" >
+                <div class="messages" ng-messages="load.dateForm.datepick.$error" ng-if="load.dateForm.datepick.$ngBlur" >
                   <div class="text-danger" ng-message="date-required">Geef een geldige datum in.</div>
                   <div class="text-danger" ng-message="date">Geef een geldige datum formaat in.</div>
                   <div class="text-danger" ng-message="date-max">De datum die je koos ligt te ver in de toekomst. Kies een datum die voor {{maxDateStr}} ligt.</div>
@@ -184,6 +185,7 @@
 <script src="bower_components/angular-touch/angular-touch.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="bower_components/tink-helper-date-angular/dist/tink-helper-date-angular.js"></script>
+<script src="bower_components/randexp/build/randexp.min.js"></script>
 <script src="bower_components/tink-helper-safe-apply-angular/dist/tink-helper-safe-apply-angular.js"></script>
 <script src="bower_components/tink-helper-format-angular/dist/tink-helper-format-angular.js"></script>
 <!-- endbower -->
@@ -200,13 +202,13 @@
       $scope.selectedDate1 = new Date();
     }
     $scope.setmonth = function(){
-      //$scope.selectedDate1.setMonth($scope.selectedDate1.getMonth()+1);
+      $scope.selectedDate1.setMonth($scope.selectedDate1.getMonth()+1);
       $scope.disable = false;
       console.log($scope.selectedDate1)
     }
     $scope.testV = function(){
 
-      console.log($scope.dateForm)
+      console.log($scope.selectedDate1)
     }
     $scope.nullf = function(){
       console.log($scope.dateForm.datepick);

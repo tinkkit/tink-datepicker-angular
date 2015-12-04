@@ -9,7 +9,7 @@
     return {
       restrict: 'E',
       require: ['ngModel', '?^form'],
-      replace: true,
+      replace: false,
       templateUrl: 'templates/tinkDatePickerInput.html',
       scope: {
         ngModel: '=?',
@@ -32,7 +32,18 @@
 
         return {
           pre: function () { },
-          post: function (scope, element, attr) {
+          post: function (scope, element, attr,ctrl) {
+
+           // -- check if we are using a touch device  --/
+            var isDateSupported = function () {
+              var i = document.createElement('input');
+              i.setAttribute('type', 'date');
+              return i.type !== 'text';
+            };
+
+            var isNative = /(ip(a|o)d|iphone|android)/ig.test($window.navigator.userAgent);
+            var isTouch = ('createTouch' in $window.document) && isNative && isDateSupported();
+
             scope.name = attr.name;
             scope.opts = attr;
             /*
@@ -47,7 +58,8 @@
               mode: 0,
               appended: 0,
               selectedDate: null,
-              disabled: undefined
+              disabled: undefined,
+              dateFormat:'dd/mm/yyyy'
             };
 
             //The clicable icon to open and close the datepicker
@@ -56,6 +68,9 @@
             var copyEl;
             //The editable div.
             var content = element.find('div.faux-input');
+            if(isTouch){
+              content = element.find('input');
+            }
             //To hold all the liseners to close them later
             var Listeners = {};
 
@@ -68,7 +83,8 @@
               // Check if the datepicker content isn't already added
               if ($directive.appended !== 1) {
                   //add the compiled version of the template to the dom
-                  element.append(copyEl);
+                  var fixForRightAppend = element.find('div.datepicker-input-fields');
+                  fixForRightAppend.append(copyEl);
                   //Raise the vlag
                   $directive.appended = 1;
                 }
@@ -116,6 +132,9 @@
                 if (!(valueNew instanceof Date)) {
                   //Change to Date object
                   scope.ngModel = new Date(valueNew);
+                }else{
+                   $directive.selectedDate = valueNew;
+                   $directive.viewDate = $directive.selectedDate;
                 }
                 if(valueNew instanceof Date && valueOld instanceof Date && valueNew.getTime() !== valueOld.getTime()){
                   scope.ngChange();
@@ -130,6 +149,7 @@
                 scope.ngChange();
               }
             });
+            var prevValue;
 
             /*
             * Lisen to a value change
@@ -137,19 +157,35 @@
             content.bind('valueChanged', function (e, val) {
               //We put this in a safeaply because we are out of the angular scope !
               safeApply(scope, function () {
+
                 //Check if the date we received is a valid date.
-                if (validFormat(val, 'dd/mm/yyyy')) {
+                if (validFormat(val, $directive.dateFormat)) {
                   //Convert the String Date to a Date object and put it as the selected date.
-                  $directive.selectedDate = dateCalculator.getDate(val, 'dd/mm/yyyy');
-                  //addTime($directive.selectedDate,scope.ngModel);
+                  $directive.selectedDate = dateCalculator.getDate(val, $directive.dateFormat);
+                  //ctrl[0].$setViewValue($directive.selectedDate);
+                  addTime($directive.selectedDate,scope.ngModel);
                   //change the view date to the date we have selected.
                   $directive.viewDate = $directive.selectedDate;
                   //Build the datepicker again because we have changed the variables.
                   scope.build();
+
                 } else {
                   $directive.selectedDate = null;
                   scope.build();
                 }
+                if(ctrl[0] && prevValue !== val){
+                  ctrl[0].$setDirty();
+                  $(content).controller('ngModel').$setDirty();
+                }
+                prevValue = val;
+              });
+            });
+
+            content.bind('blur', function (e, val) {
+              //We put this in a safeaply because we are out of the angular scope !
+              safeApply(scope, function () {
+                scope.ngModel = $directive.selectedDate;
+                $(content).controller('ngModel').$ngBlur = true;
               });
             });
 
@@ -239,6 +275,16 @@
               //Aria: on content focus reset the selected aria focus.
               content.bind('focus', function () {
                 currentSelected = null;
+              });
+
+              element.bind('focus', function () {
+                if($(content).scope() && $(content).scope().ctrl){
+                  $(content).scope().ctrl.setCurs();
+                }else{
+                  $(element).find('input').focus();
+                  $(element).find('input').click();
+                  //$(element).find('input').touchstart();
+                }
               });
 
               /*
@@ -466,18 +512,14 @@
               // labels for the days you can make this variable //
               var dayLabels = ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'];
               // -- create the labels  --/
-              scope.dayLabels = $sce.trustAsHtml('<th>' + dayLabels.join('</th><th>') + '</th>');
+              scope.labels = [];
               // Add a watch to know when input changes from the outside //
 
-              // -- check if we are using a touch device  --/
-              var isDateSupported = function () {
-                var i = document.createElement('input');
-                i.setAttribute('type', 'date');
-                return i.type !== 'text';
-              };
 
-              var isNative = /(ip(a|o)d|iphone|android)/ig.test($window.navigator.userAgent);
-              var isTouch = ('createTouch' in $window.document) && isNative && isDateSupported();
+
+              if(isTouch){
+                $directive.dateFormat = 'yyyy-mm-dd';
+              }
 
               clickable.bind('mousedown touch', function () {
                 safeApply(scope, function () {
@@ -596,40 +638,41 @@
 
               scope.pane = { prev: false, next: false };
               scope.build = function () {
-                if ($directive.viewDate === null || $directive.viewDate === undefined) {
-                  $directive.viewDate = new Date();
-                }
-
-                if (checkBefore($directive.viewDate, scope.minDate)) {
-                  scope.pane.prev = true;
-                  $directive.viewDate = new Date(scope.minDate);
-                } else {
-                  scope.pane.prev = false;
-                }
-                if (checkAfter($directive.viewDate, scope.maxDate)) {
-                  scope.pane.next = true;
-                  $directive.viewDate = new Date(scope.maxDate);
-                } else {
-                  scope.pane.next = false;
-                }
-                scope.labels = [];
-                if ($directive.mode === 1) {
-                  scope.title = dateCalculator.format($directive.viewDate, 'yyyy');
-                  scope.rows = calView.monthInRows($directive.viewDate, scope.minDate, scope.maxDate);
-                  scope.showLabels = 0;
-                }
-                if ($directive.mode === 0) {
-                  scope.title = dateCalculator.format($directive.viewDate, options.yearTitleFormat);
-                  scope.rows = calView.daysInRows($directive.viewDate, $directive.selectedDate, scope.minDate, scope.maxDate);
-                  scope.showLabels = $sce.trustAsHtml('<th>' + dayLabels.join('</th><th>') + '</th>');
-                }
-                if ($directive.mode === 2) {
-                  var currentYear = parseInt(dateCalculator.format($directive.viewDate, 'yyyy'));
-                  scope.title = (currentYear - 11) + '-' + currentYear;
-                  scope.rows = calView.yearInRows($directive.viewDate, scope.minDate, scope.maxDate);
-                  scope.showLabels = 0;
-                    //setMode(1);
+                safeApply(scope,function(){
+                  if ($directive.viewDate === null || $directive.viewDate === undefined) {
+                    $directive.viewDate = new Date();
                   }
+
+                  if (checkBefore($directive.viewDate, scope.minDate)) {
+                    scope.pane.prev = true;
+                    $directive.viewDate = new Date(scope.minDate);
+                  } else {
+                    scope.pane.prev = false;
+                  }
+                  if (checkAfter($directive.viewDate, scope.maxDate)) {
+                    scope.pane.next = true;
+                    $directive.viewDate = new Date(scope.maxDate);
+                  } else {
+                    scope.pane.next = false;
+                  }
+                  scope.labels = [];
+                  if ($directive.mode === 1) {
+                    scope.title = dateCalculator.format($directive.viewDate, 'yyyy');
+                    scope.rows = calView.monthInRows($directive.viewDate, scope.minDate, scope.maxDate);
+                    scope.showLabels = 0;
+                  }
+                  if ($directive.mode === 0) {
+                    scope.title = dateCalculator.format($directive.viewDate, options.yearTitleFormat);
+                    scope.rows = calView.daysInRows($directive.viewDate, $directive.selectedDate, scope.minDate, scope.maxDate);
+                    scope.labels = $sce.trustAsHtml('<th>' + dayLabels.join('</th><th>') + '</th>');
+                  }
+                  if ($directive.mode === 2) {
+                    var currentYear = parseInt(dateCalculator.format($directive.viewDate, 'yyyy'));
+                    scope.title = (currentYear - 11) + '-' + currentYear;
+                    scope.rows = calView.yearInRows($directive.viewDate, scope.minDate, scope.maxDate);
+                      //setMode(1);
+                  }
+                })
                 };
 
                 function checkBefore(date, before) {
