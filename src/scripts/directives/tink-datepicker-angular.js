@@ -18,7 +18,8 @@
         isDisabled: '=?',
         name: '=',
         ngChange: '&',
-        alignsRight: '=?'
+        alignsRight: '=?',
+        showDayLabels: '=?'
       },
       compile: function (template, $attr) {
         if ($attr.required) {
@@ -181,7 +182,7 @@
               });
             });
 
-            content.bind('blur', function (e, val) {
+            content.bind('blur', function () {
               //We put this in a safeaply because we are out of the angular scope !
               safeApply(scope, function () {
                 scope.ngModel = $directive.selectedDate;
@@ -508,12 +509,8 @@
                }, true);*/
 
 
-
               // labels for the days you can make this variable //
               var dayLabels = ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'];
-              // -- create the labels  --/
-              scope.labels = [];
-              // Add a watch to know when input changes from the outside //
 
 
 
@@ -659,12 +656,13 @@
                   if ($directive.mode === 1) {
                     scope.title = dateCalculator.format($directive.viewDate, 'yyyy');
                     scope.rows = calView.monthInRows($directive.viewDate, scope.minDate, scope.maxDate);
-                    scope.showLabels = 0;
+                    scope.showDayLabels = 0;
                   }
                   if ($directive.mode === 0) {
                     scope.title = dateCalculator.format($directive.viewDate, options.yearTitleFormat);
                     scope.rows = calView.daysInRows($directive.viewDate, $directive.selectedDate, scope.minDate, scope.maxDate);
                     scope.labels = $sce.trustAsHtml('<th>' + dayLabels.join('</th><th>') + '</th>');
+                    scope.showDayLabels = showDayLabels();
                   }
                   if ($directive.mode === 2) {
                     var currentYear = parseInt(dateCalculator.format($directive.viewDate, 'yyyy'));
@@ -672,8 +670,19 @@
                     scope.rows = calView.yearInRows($directive.viewDate, scope.minDate, scope.maxDate);
                       //setMode(1);
                   }
-                })
+                });
                 };
+
+                // Check if day labels should be shown
+                function showDayLabels() {
+                  if ($attr.showDayLabels) {
+                    if($attr.showDayLabels === true || $attr.showDayLabels === 'true') {
+                      return true;
+                    }
+                    return false;
+                  }
+                  return true;
+                }
 
                 function checkBefore(date, before) {
                   if (!angular.isDate(date)) {

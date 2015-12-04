@@ -1,6 +1,6 @@
 # Tink datepicker Angular directive
 
-v1.3.2
+v1.3.3
 
 ## What is this repository for?
 
@@ -65,6 +65,7 @@ data-max-date | `date` | `null` | The minimum available date that can be selecte
 data-min-date | `date` | `null` | The maximum available date that can be selected.
 data-is-disabled | `boolean` | `false` | Whether the input field is disabled or not.
 data-aligns-right | `boolean` | `false` | Aligns the datepicker to the right edge of the input field (instead of the left edge).
+data-show-day-labels | `boolean` | `true` | Whether the day labels in the calendar are shown or not.
 
 ### Example
 

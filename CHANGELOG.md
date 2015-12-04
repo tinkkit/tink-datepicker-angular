@@ -14,6 +14,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [1.3.3] - 2015-12-04
+
+### Added
+- Added an option to hide the day labels
+
+### Fixed
+- Fixed an issue with the day labels that were not shown
+
+
+
 ## [1.3.2] - 2015-12-04
 
 ### Fixed

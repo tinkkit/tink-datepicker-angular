@@ -18,7 +18,8 @@
         isDisabled: '=?',
         name: '=',
         ngChange: '&',
-        alignsRight: '=?'
+        alignsRight: '=?',
+        showDayLabels: '=?'
       },
       compile: function (template, $attr) {
         if ($attr.required) {
@@ -181,7 +182,7 @@
               });
             });
 
-            content.bind('blur', function (e, val) {
+            content.bind('blur', function () {
               //We put this in a safeaply because we are out of the angular scope !
               safeApply(scope, function () {
                 scope.ngModel = $directive.selectedDate;
@@ -508,12 +509,8 @@
                }, true);*/
 
 
-
               // labels for the days you can make this variable //
               var dayLabels = ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'];
-              // -- create the labels  --/
-              scope.labels = [];
-              // Add a watch to know when input changes from the outside //
 
 
 
@@ -659,12 +656,13 @@
                   if ($directive.mode === 1) {
                     scope.title = dateCalculator.format($directive.viewDate, 'yyyy');
                     scope.rows = calView.monthInRows($directive.viewDate, scope.minDate, scope.maxDate);
-                    scope.showLabels = 0;
+                    scope.showDayLabels = 0;
                   }
                   if ($directive.mode === 0) {
                     scope.title = dateCalculator.format($directive.viewDate, options.yearTitleFormat);
                     scope.rows = calView.daysInRows($directive.viewDate, $directive.selectedDate, scope.minDate, scope.maxDate);
                     scope.labels = $sce.trustAsHtml('<th>' + dayLabels.join('</th><th>') + '</th>');
+                    scope.showDayLabels = showDayLabels();
                   }
                   if ($directive.mode === 2) {
                     var currentYear = parseInt(dateCalculator.format($directive.viewDate, 'yyyy'));
@@ -672,8 +670,19 @@
                     scope.rows = calView.yearInRows($directive.viewDate, scope.minDate, scope.maxDate);
                       //setMode(1);
                   }
-                })
+                });
                 };
+
+                // Check if day labels should be shown
+                function showDayLabels() {
+                  if ($attr.showDayLabels) {
+                    if($attr.showDayLabels === true || $attr.showDayLabels === 'true') {
+                      return true;
+                    }
+                    return false;
+                  }
+                  return true;
+                }
 
                 function checkBefore(date, before) {
                   if (!angular.isDate(date)) {
@@ -748,7 +757,7 @@
   'use strict';
 
   $templateCache.put('templates/tinkDatePickerField.html',
-    "<div role=datepicker class=\"dropdown-menu datepicker\" data-ng-class=\"{'aligns-right': $alignsright == 'true'}\"> <table style=\"table-layout: fixed; height: 100%; width: 100%\"> <thead> <tr class=\"text-center datepicker-nav\"> <th> <button tabindex=-1 type=button data-ng-disabled=pane.prev aria-label=\"vorige maand\" class=\"btn pull-left\" data-ng-mousedown=$disable($event) data-ng-click=$selectPane(-1)> <i class=\"fa fa-chevron-left\"></i> </button> </th> <th colspan=\"{{ rows[0].length - 2 }}\"> <button tabindex=0 type=button class=\"btn btn-block text-strong\" data-ng-mousedown=$disable($event) data-ng-click=$toggleMode()> <strong style=\"text-transform: capitalize\" data-ng-bind=title></strong> </button> </th> <th> <button tabindex=0 type=button data-ng-mousedown=$disable($event) data-ng-disabled=pane.next aria-label=\"volgende maand\" class=\"btn pull-right\" data-ng-click=$selectPane(+1)> <i class=\"fa fa-chevron-right\"></i> </button> </th> </tr> <tr class=datepicker-days data-ng-bind-html=dayLabels data-ng-if=showLabels></tr> </thead> <tbody> <tr data-ng-repeat=\"(i, row) in rows\" height=\"{{ 100 / rows.length }}%\"> <td class=text-center data-ng-repeat=\"(j, el) in row\"> <button tabindex=0 type=button class=btn style=\"width: 100%\" data-ng-class=\"{'btn-selected': el.selected, 'btn-today': el.isToday && !el.elected, 'btn-grayed':el.isMuted}\" data-ng-mousedown=$disable($event) data-ng-focus=elemFocus($event) data-ng-click=$select(el.date) data-ng-disabled=el.disabled> <span role=\"\" data-ng-class=\"{'text-muted': el.muted}\" data-ng-bind=el.label></span> </button> </td> </tr> </tbody>  </table> </div>"
+    "<div role=datepicker class=\"dropdown-menu datepicker\" data-ng-class=\"{'aligns-right': $alignsright == 'true'}\"> <table style=\"table-layout: fixed; height: 100%; width: 100%\"> <thead> <tr class=\"text-center datepicker-nav\"> <th> <button tabindex=-1 type=button data-ng-disabled=pane.prev aria-label=\"vorige maand\" class=\"btn pull-left\" data-ng-mousedown=$disable($event) data-ng-click=$selectPane(-1)> <i class=\"fa fa-chevron-left\"></i> </button> </th> <th colspan=\"{{ rows[0].length - 2 }}\"> <button tabindex=0 type=button class=\"btn btn-block text-strong\" data-ng-mousedown=$disable($event) data-ng-click=$toggleMode()> <strong style=\"text-transform: capitalize\" data-ng-bind=title></strong> </button> </th> <th> <button tabindex=0 type=button data-ng-mousedown=$disable($event) data-ng-disabled=pane.next aria-label=\"volgende maand\" class=\"btn pull-right\" data-ng-click=$selectPane(+1)> <i class=\"fa fa-chevron-right\"></i> </button> </th> </tr> <tr class=datepicker-days data-ng-bind-html=labels data-ng-if=showDayLabels></tr> </thead> <tbody> <tr data-ng-repeat=\"(i, row) in rows\" height=\"{{ 100 / rows.length }}%\"> <td class=text-center data-ng-repeat=\"(j, el) in row\"> <button tabindex=0 type=button class=btn style=\"width: 100%\" data-ng-class=\"{'btn-selected': el.selected, 'btn-today': el.isToday && !el.elected, 'btn-grayed':el.isMuted}\" data-ng-mousedown=$disable($event) data-ng-focus=elemFocus($event) data-ng-click=$select(el.date) data-ng-disabled=el.disabled> <span role=\"\" data-ng-class=\"{'text-muted': el.muted}\" data-ng-bind=el.label></span> </button> </td> </tr> </tbody>  </table> </div>"
   );
 
 
