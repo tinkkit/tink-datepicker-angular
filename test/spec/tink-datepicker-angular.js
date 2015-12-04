@@ -118,7 +118,8 @@ describe('datepicker', function() {
       angular.element(elm.find('.datepicker-icon')[0]).triggerHandler('mousedown');
       elm.find('button.btn.btn-block.text-strong strong').trigger('click');
       scope.$digest();
-      expect(elm.find('.datepicker button span[ng-bind="el.label"]').length).toBe(12);
+      console.log(elm);
+      expect(elm.find('.datepicker button span[data-ng-bind="el.label"]').length).toBe(12);
     });
 
      it('on first click show months',function(){

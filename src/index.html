@@ -15,7 +15,7 @@
 <div ng-controller="load" class="container">
   <div class="row">
     <div class="col-xs-12 margin-bottom margin-top">
-      <form name="formTest"><data-tink-datepicker required="required" name="datepick" data-max-date="maxdate" data-min-date="mindate" data-ng-model="selectedDate"/></form>
+      <form name="formTest"><data-tink-datepicker required="required" name="datepick" data-max-date="maxdate" data-min-date="mindate" data-ng-model="selectedDate" data-aligns-right="true" /></form>
     </div>
   </div>
 
@@ -40,7 +40,7 @@
               </div>
               <div class="col-xs-12 col-sm-6 col-md-4">
                 <div class="validation">
-                  <data-tink-datepicker ng-changed="testV()" ng-change="testV()" aligns-right="true" name="datepick"  data-ng-model="selectedDate1"/>
+                  <data-tink-datepicker ng-changed="testV()" ng-change="testV()" aligns-right="true" name="datepick"  data-ng-model="selectedDate1" datepicker />
                 </div>
                 <span class="help-block">Kies een datum die na {{minDateStr}} en voor {{maxDateStr}} ligt.</span>
               </div>
@@ -185,6 +185,7 @@
 <script src="bower_components/angular-touch/angular-touch.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="bower_components/tink-helper-date-angular/dist/tink-helper-date-angular.js"></script>
+<script src="bower_components/randexp/build/randexp.min.js"></script>
 <script src="bower_components/tink-helper-safe-apply-angular/dist/tink-helper-safe-apply-angular.js"></script>
 <script src="bower_components/tink-helper-format-angular/dist/tink-helper-format-angular.js"></script>
 <!-- endbower -->

@@ -83,7 +83,8 @@
               // Check if the datepicker content isn't already added
               if ($directive.appended !== 1) {
                   //add the compiled version of the template to the dom
-                  element.append(copyEl);
+                  var fixForRightAppend = element.find('div.datepicker-input-fields');
+                  fixForRightAppend.append(copyEl);
                   //Raise the vlag
                   $directive.appended = 1;
                 }
@@ -149,7 +150,7 @@
               }
             });
             var prevValue;
-            
+
             /*
             * Lisen to a value change
             */
@@ -278,12 +279,12 @@
 
               element.bind('focus', function () {
                 if($(content).scope() && $(content).scope().ctrl){
-                  $(content).scope().ctrl.setCurs();   
+                  $(content).scope().ctrl.setCurs();
                 }else{
                   $(element).find('input').focus();
                   $(element).find('input').click();
                   //$(element).find('input').touchstart();
-                }  
+                }
               });
 
               /*
@@ -514,7 +515,7 @@
               scope.labels = [];
               // Add a watch to know when input changes from the outside //
 
-             
+
 
               if(isTouch){
                 $directive.dateFormat = 'yyyy-mm-dd';
@@ -615,7 +616,7 @@
                 $event.preventDefault(); return false;
               };
 
-            
+
 
               scope.$select = function (date) {
                 //addTime(date,scope.ngModel);

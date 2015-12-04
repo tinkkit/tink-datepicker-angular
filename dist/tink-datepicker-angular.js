@@ -83,7 +83,8 @@
               // Check if the datepicker content isn't already added
               if ($directive.appended !== 1) {
                   //add the compiled version of the template to the dom
-                  element.append(copyEl);
+                  var fixForRightAppend = element.find('div.datepicker-input-fields');
+                  fixForRightAppend.append(copyEl);
                   //Raise the vlag
                   $directive.appended = 1;
                 }
@@ -149,7 +150,7 @@
               }
             });
             var prevValue;
-            
+
             /*
             * Lisen to a value change
             */
@@ -278,12 +279,12 @@
 
               element.bind('focus', function () {
                 if($(content).scope() && $(content).scope().ctrl){
-                  $(content).scope().ctrl.setCurs();   
+                  $(content).scope().ctrl.setCurs();
                 }else{
                   $(element).find('input').focus();
                   $(element).find('input').click();
                   //$(element).find('input').touchstart();
-                }  
+                }
               });
 
               /*
@@ -514,7 +515,7 @@
               scope.labels = [];
               // Add a watch to know when input changes from the outside //
 
-             
+
 
               if(isTouch){
                 $directive.dateFormat = 'yyyy-mm-dd';
@@ -615,7 +616,7 @@
                 $event.preventDefault(); return false;
               };
 
-            
+
 
               scope.$select = function (date) {
                 //addTime(date,scope.ngModel);
@@ -747,12 +748,12 @@
   'use strict';
 
   $templateCache.put('templates/tinkDatePickerField.html',
-    "<div role=datepicker class=\"dropdown-menu datepicker\" ng-class=\"{'aligns-right': $alignsright == 'true'}\"> <table style=\"table-layout: fixed; height: 100%; width: 100%\"> <thead> <tr class=\"text-center datepicker-nav\"> <th> <button tabindex=-1 type=button ng-disabled=pane.prev aria-label=\"vorige maand\" class=\"btn pull-left\" ng-mousedown=$disable($event) ng-click=$selectPane(-1)> <i class=\"fa fa-chevron-left\"></i> </button> </th> <th colspan=\"{{ rows[0].length - 2 }}\"> <button tabindex=0 type=button class=\"btn btn-block text-strong\" ng-mousedown=$disable($event) ng-click=$toggleMode()> <strong style=\"text-transform: capitalize\" ng-bind=title></strong> </button> </th> <th> <button tabindex=0 type=button ng-mousedown=$disable($event) ng-disabled=pane.next aria-label=\"volgende maand\" class=\"btn pull-right\" ng-click=$selectPane(+1)> <i class=\"fa fa-chevron-right\"></i> </button> </th> </tr> <tr class=datepicker-days ng-bind-html=dayLabels ng-if=showLabels></tr> </thead> <tbody> <tr ng-repeat=\"(i, row) in rows\" height=\"{{ 100 / rows.length }}%\"> <td class=text-center ng-repeat=\"(j, el) in row\"> <button tabindex=0 type=button class=btn style=\"width: 100%\" ng-class=\"{'btn-selected': el.selected, 'btn-today': el.isToday && !el.elected, 'btn-grayed':el.isMuted}\" ng-mousedown=$disable($event) ng-focus=elemFocus($event) ng-click=$select(el.date) ng-disabled=el.disabled> <span role=\"\" ng-class=\"{'text-muted': el.muted}\" ng-bind=el.label></span> </button> </td> </tr> </tbody>  </table></div>"
+    "<div role=datepicker class=\"dropdown-menu datepicker\" data-ng-class=\"{'aligns-right': $alignsright == 'true'}\"> <table style=\"table-layout: fixed; height: 100%; width: 100%\"> <thead> <tr class=\"text-center datepicker-nav\"> <th> <button tabindex=-1 type=button data-ng-disabled=pane.prev aria-label=\"vorige maand\" class=\"btn pull-left\" data-ng-mousedown=$disable($event) data-ng-click=$selectPane(-1)> <i class=\"fa fa-chevron-left\"></i> </button> </th> <th colspan=\"{{ rows[0].length - 2 }}\"> <button tabindex=0 type=button class=\"btn btn-block text-strong\" data-ng-mousedown=$disable($event) data-ng-click=$toggleMode()> <strong style=\"text-transform: capitalize\" data-ng-bind=title></strong> </button> </th> <th> <button tabindex=0 type=button data-ng-mousedown=$disable($event) data-ng-disabled=pane.next aria-label=\"volgende maand\" class=\"btn pull-right\" data-ng-click=$selectPane(+1)> <i class=\"fa fa-chevron-right\"></i> </button> </th> </tr> <tr class=datepicker-days data-ng-bind-html=dayLabels data-ng-if=showLabels></tr> </thead> <tbody> <tr data-ng-repeat=\"(i, row) in rows\" height=\"{{ 100 / rows.length }}%\"> <td class=text-center data-ng-repeat=\"(j, el) in row\"> <button tabindex=0 type=button class=btn style=\"width: 100%\" data-ng-class=\"{'btn-selected': el.selected, 'btn-today': el.isToday && !el.elected, 'btn-grayed':el.isMuted}\" data-ng-mousedown=$disable($event) data-ng-focus=elemFocus($event) data-ng-click=$select(el.date) data-ng-disabled=el.disabled> <span role=\"\" data-ng-class=\"{'text-muted': el.muted}\" data-ng-bind=el.label></span> </button> </td> </tr> </tbody>  </table> </div>"
   );
 
 
   $templateCache.put('templates/tinkDatePickerInput.html',
-    "<div class=datepicker-input-fields> <input role=date aria-label=datepicker data-is-disabled=isDisabled tink-format-input data-format=00/00/0000 data-placeholder=dd/mm/jjjj data-date dynamic-name=dynamicName data-max-date=maxDate data-min-date=minDate ng-model=\"ngModel\">\n" +
+    "<div class=datepicker-input-fields> <input role=date aria-label=datepicker data-is-disabled=isDisabled tink-format-input data-format=00/00/0000 data-placeholder=dd/mm/jjjj data-date dynamic-name=dynamicName data-max-date=maxDate data-min-date=minDate data-ng-model=\"ngModel\">\n" +
     "<span role=\"datepicker icon\" class=datepicker-icon> <i class=\"fa fa-calendar\"></i> </span> </div>"
   );
 

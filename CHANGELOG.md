@@ -14,10 +14,18 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [1.3.2] - 2015-12-04
+
+### Fixed
+- Fixed an issue with the `data-aligns-right` attribute
+
+
+
 ## [1.3.1] - 2015-11-30
 
 ### Changed
-- editable form field update
+- Necessary update for the editable fieldset
+
 
 
 ## [1.3.0] - 2015-11-18
