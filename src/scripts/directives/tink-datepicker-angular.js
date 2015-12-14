@@ -619,6 +619,10 @@
                 //addTime(date,scope.ngModel);
                 $directive.click = 1;
                 $directive.viewDate = date;
+                if(ctrl[0]){
+                  ctrl[0].$setDirty();
+                  $(content).controller('ngModel').$setDirty();
+                }
                 if ($directive.mode === 0) {
                   scope.ngModel = addTime(date,scope.ngModel);
                   scope.hide();
