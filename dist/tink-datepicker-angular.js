@@ -150,8 +150,6 @@
                   scope.ngModel.setHours(valueOld.getHours());
                   scope.ngModel.setMilliseconds(valueOld.getMilliseconds());
                 }
-              }else{
-                scope.ngChange();
               }
             });
             var prevValue;
