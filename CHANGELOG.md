@@ -14,6 +14,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [1.3.6] - 2016-01-04
+
+### Fixed
+- Fixed ng-change call when first run.
+
 ## [1.3.5] - 2016-01-04
 
 ### Fixed
