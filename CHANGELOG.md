@@ -14,6 +14,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 -->
 
+## [1.3.5] - 2016-01-04
+
+### Fixed
+- Fixed When an element is destroyed remove the scope.
+
 ## [1.3.4] - 2015-12-14
 
 ### Added
