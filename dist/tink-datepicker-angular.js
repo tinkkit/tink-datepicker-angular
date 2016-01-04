@@ -35,6 +35,10 @@
           pre: function () { },
           post: function (scope, element, attr,ctrl) {
 
+            element.on('$destroy', function(){
+              scope.$destroy();
+            });
+
            // -- check if we are using a touch device  --/
             var isDateSupported = function () {
               var i = document.createElement('input');
