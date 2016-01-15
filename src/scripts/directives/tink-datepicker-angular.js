@@ -137,7 +137,7 @@
                 if (!(valueNew instanceof Date)) {
                   //Change to Date object
                   scope.ngModel = new Date(valueNew);
-                }else if(valueNew != 'Invalid Date'){
+                }else if(valueNew !== 'Invalid Date'){
                    $directive.selectedDate = valueNew;
                    $directive.viewDate = $directive.selectedDate;
                 }
