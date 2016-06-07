@@ -16,7 +16,7 @@
         minDate: '=?',
         maxDate: '=?',
         isDisabled: '=?',
-        name: '=',
+        name: '@',
         ngChange: '&',
         alignsRight: '=?',
         showDayLabels: '=?'
